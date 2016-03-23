@@ -59,7 +59,7 @@ public class GameScreen extends Screen  {
         ss.push(settingScreen); 
       }
     });
-    //=============================================================================pauseButton
+    //=============================================================================pauseButton=====
     /*Image pauseImage = assets().getImage("images/pauseButton.png");
     this.pauseButton = graphics().createImageLayer(pauseImage);
     pauseButton.setTranslation(200, 10);
