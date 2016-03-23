@@ -16,36 +16,38 @@ import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
 
 
-public class HomeScreen extends Screen  {
 
-  private final LevelScreen levelScreen;
-  private final SettingScreen settingScreen;
+public class PauseScreen extends Screen  {
+
   private final ScreenStack ss;
+
+  private final GameScreen gameScreen;
   private final ImageLayer bg;
-  private final ImageLayer startButton;
-  private final ImageLayer settingButton;
+  private final ImageLayer backButton;
+
   private Root root;
 
-  public HomeScreen(final ScreenStack ss){
+  public PauseScreen(final ScreenStack ss){
     this.ss = ss;
-    this.levelScreen =new LevelScreen(ss);
-    this.settingScreen =new SettingScreen(ss);
-    Image bgImage = assets().getImage("images/home.png");
+    this.gameScreen =new GameScreen(ss);
+
+
+
+    Image bgImage = assets().getImage("images/pausePage.png");
     this.bg = graphics().createImageLayer(bgImage);
     
-    //=============================================================START
-    Image startImage = assets().getImage("images/start.png");
-    this.startButton = graphics().createImageLayer(startImage);
-    startButton.setTranslation(10, 10);
-
-    startButton.addListener(new Mouse.LayerAdapter(){
+    //====================================================================backButton
+    Image backImage = assets().getImage("images/back.png");
+    this.backButton = graphics().createImageLayer(backImage);
+    backButton.setTranslation(10, 10);
+    
+    backButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        ss.push(levelScreen); 
+        ss.remove(ss.top()); // pop screen
       }
     });
-
-    //=============================================================Setting
+    /*
     Image settingImage = assets().getImage("images/setting.png");
     this.settingButton = graphics().createImageLayer(settingImage);
     settingButton.setTranslation(200, 10);
@@ -55,18 +57,18 @@ public class HomeScreen extends Screen  {
       public void onMouseUp(Mouse.ButtonEvent event){
         ss.push(settingScreen); 
       }
-    });
-    
+    });*/
   }
+ 
+
+
 
   //=============================================================
   @Override
   public void wasShown (){
     super.wasShown();
     this.layer.add(bg);
-    this.layer.add(startButton);  
-    this.layer.add(settingButton);
+    this.layer.add(backButton);
   
   }
 }
-

@@ -17,19 +17,22 @@ import static playn.core.PlayN.graphics;
 
 
 
-public class TestScreen extends Screen  {
+public class LevelScreen extends Screen  {
 
   private final ScreenStack ss;
+  private final GameScreen gameScreen;
   private final ImageLayer bg;
   private final ImageLayer backButton;
+  private final ImageLayer startButton;
   private Root root;
 
-  public TestScreen(final ScreenStack ss){
+  public LevelScreen(final ScreenStack ss){
     this.ss = ss;
-    Image bgImage = assets().getImage("images/bg.png");
+    this.gameScreen =new GameScreen(ss);
+    Image bgImage = assets().getImage("images/levelPage.png");
     this.bg = graphics().createImageLayer(bgImage);
     
-
+    //============================================================backButton
     Image backImage = assets().getImage("images/back.png");
     this.backButton = graphics().createImageLayer(backImage);
     backButton.setTranslation(10, 10);
@@ -40,6 +43,18 @@ public class TestScreen extends Screen  {
         ss.remove(ss.top()); // pop screen
       }
     });
+
+    //=============================================================gameButton
+    Image gameImage = assets().getImage("images/start.png");
+    this.startButton = graphics().createImageLayer(gameImage);
+    startButton.setTranslation(200, 10);
+    
+    startButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        ss.push(gameScreen);
+      }
+    });
   }
 
   //=============================================================
@@ -48,6 +63,7 @@ public class TestScreen extends Screen  {
     super.wasShown();
     this.layer.add(bg);
     this.layer.add(backButton);
+    this.layer.add(startButton);
   
   }
 }

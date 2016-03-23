@@ -16,29 +16,28 @@ import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
 
 
-public class HomeScreen2 extends Screen  {
 
-  private final TestScreen testScreen;
+public class SettingScreen extends Screen  {
+
   private final ScreenStack ss;
   private final ImageLayer bg;
-  private final ImageLayer startButton;
+  private final ImageLayer backButton;
   private Root root;
 
-  public HomeScreen2(final ScreenStack ss){
+  public SettingScreen(final ScreenStack ss){
     this.ss = ss;
-    this.testScreen =new TestScreen(ss);
-    Image bgImage = assets().getImage("images/home.png");
+    Image bgImage = assets().getImage("images/settingPage.png");
     this.bg = graphics().createImageLayer(bgImage);
     
 
-    Image startImage = assets().getImage("images/start.png");
-    this.startButton = graphics().createImageLayer(startImage);
-    startButton.setTranslation(10, 10);
+    Image backImage = assets().getImage("images/back.png");
+    this.backButton = graphics().createImageLayer(backImage);
+    backButton.setTranslation(10, 10);
     
-    startButton.addListener(new Mouse.LayerAdapter(){
+    backButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        ss.push(testScreen); 
+        ss.remove(ss.top()); // pop screen
       }
     });
   }
@@ -48,8 +47,7 @@ public class HomeScreen2 extends Screen  {
   public void wasShown (){
     super.wasShown();
     this.layer.add(bg);
-    this.layer.add(startButton);
+    this.layer.add(backButton);
   
   }
 }
-
