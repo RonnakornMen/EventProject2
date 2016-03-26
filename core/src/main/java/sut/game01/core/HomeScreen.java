@@ -24,19 +24,20 @@ public class HomeScreen extends Screen  {
   private final ImageLayer bg;
   private final ImageLayer startButton;
   private final ImageLayer settingButton;
+  private final ImageLayer faceButton;
   private Root root;
 
   public HomeScreen(final ScreenStack ss){
     this.ss = ss;
     this.levelScreen =new LevelScreen(ss);
     this.settingScreen =new SettingScreen(ss);
-    Image bgImage = assets().getImage("images/home.png");
+    Image bgImage = assets().getImage("images/bg.png");
     this.bg = graphics().createImageLayer(bgImage);
     
     //=============================================================START
-    Image startImage = assets().getImage("images/start.png");
+    Image startImage = assets().getImage("images/startButton.png");
     this.startButton = graphics().createImageLayer(startImage);
-    startButton.setTranslation(10, 10);
+    startButton.setTranslation(245, 135);
 
     startButton.addListener(new Mouse.LayerAdapter(){
       @Override
@@ -46,14 +47,18 @@ public class HomeScreen extends Screen  {
     });
 
     //=============================================================Setting
-    Image settingImage = assets().getImage("images/setting.png");
+    Image settingImage = assets().getImage("images/settingButton.png");
     this.settingButton = graphics().createImageLayer(settingImage);
-    settingButton.setTranslation(200, 10);
+    settingButton.setTranslation(540, 390);
+
+    Image faceImage = assets().getImage("images/faceButton.png");
+    this.faceButton = graphics().createImageLayer(faceImage);
+    faceButton.setTranslation(40, 390);
     
     settingButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        ss.push(settingScreen); 
+        //ss.push(settingScreen); 
       }
     });
     
@@ -66,7 +71,7 @@ public class HomeScreen extends Screen  {
     this.layer.add(bg);
     this.layer.add(startButton);  
     this.layer.add(settingButton);
-  
+    this.layer.add(faceButton);
   }
 }
 
