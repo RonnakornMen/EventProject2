@@ -22,11 +22,13 @@ public class GameScreen extends Screen  {
   private final ScreenStack ss;
   private final SettingScreen settingScreen;
   private final OverScreen overScreen;
+  private final EndScreen endScreen;
   private final ImageLayer bg;
   private final ImageLayer backButton;
   private final ImageLayer settingButton;
   private final ImageLayer pauseButton;
   private final ImageLayer overButton;
+  private final ImageLayer endButton;
 
   private Root root;
 
@@ -34,6 +36,7 @@ public class GameScreen extends Screen  {
     this.ss = ss;
     this.settingScreen =new SettingScreen(ss);
     this.overScreen =new OverScreen(ss);
+    this.endScreen =new EndScreen(ss);
 
 
     Image bgImage = assets().getImage("images/bg.png");
@@ -84,7 +87,17 @@ public class GameScreen extends Screen  {
         ss.push(overScreen); 
       }
     });
-
+    //==================================================================================end
+    Image endImage = assets().getImage("images/endButton.png");
+    this.endButton = graphics().createImageLayer(endImage);
+    endButton.setTranslation(540, 390);
+    
+    endButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        ss.push(endScreen); 
+      }
+    });
   }
  //=============================================================
   @Override
@@ -95,6 +108,7 @@ public class GameScreen extends Screen  {
     //this.layer.add(settingButton);
     this.layer.add(pauseButton);
     this.layer.add(overButton);
+    this.layer.add(endButton);
   
   }
 }
