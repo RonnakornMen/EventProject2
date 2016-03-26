@@ -1,0 +1,198 @@
+************************************************************************************
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>sut.game01</groupId>
+    <artifactId>game01</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>game01-core</artifactId>
+  <packaging>jar</packaging>
+  <name>MyGame Core</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.googlecode.playn</groupId>
+      <artifactId>playn-core</artifactId>
+      <version>${playn.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.threerings</groupId>
+      <artifactId>tripleplay</artifactId>
+      <version>${playn.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <!-- build a -sources.jar always, rather than only on deploy -->
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+**************************************************************************************************
+package sut.game01.core;
+
+import static playn.core.PlayN.*;
+
+import playn.core.Game;
+import playn.core.Image;
+import playn.core.ImageLayer;
+import playn.core.util.Clock;
+import tripleplay.game.ScreenStack;
+
+public class MyGame extends Game.Default {
+  public static final int UPDATE_RATE = 25;
+  private ScreenStack ss = new ScreenStack();
+  protected final Clock.Source clock = new Clock.Source(UPDATE_RATE);
+
+
+
+
+  public MyGame() {
+    super(UPDATE_RATE); // call update every 33ms (30 times per second)
+  }
+
+  @Override
+  public void init() {
+   ss.push(new HomeScreen2(ss));
+  }
+
+  @Override
+  public void update(int delta) {
+    ss.update(delta);
+  }
+
+  @Override
+  public void paint(float alpha) {
+    clock.paint(alpha);
+    ss.paint(clock);
+    // the background automatically paints itself, so no need to do anything here!
+  }
+}
+****************************************************************************
+package sut.game01.core;
+
+
+import static playn.core.PlayN.*;
+import playn.core.Image;
+import playn.core.ImageLayer;
+import playn.core.ImageLayer;
+import playn.core.Mouse;
+
+import tripleplay.game.Screen;
+import react.UnitSlot;
+import tripleplay.game.UIScreen;
+import tripleplay.game.ScreenStack;
+import tripleplay.ui.*;
+import tripleplay.ui.layout.AxisLayout;
+import static playn.core.PlayN.graphics;
+
+
+public class HomeScreen2 extends Screen  {
+
+  private final TestScreen testScreen;
+  private final ScreenStack ss;
+  private final ImageLayer bg;
+  private final ImageLayer startButton;
+  private Root root;
+
+  public HomeScreen2(final ScreenStack ss){
+    this.ss = ss;
+    this.testScreen =new TestScreen(ss);
+    Image bgImage = assets().getImage("images/home.png");
+    this.bg = graphics().createImageLayer(bgImage);
+    
+
+    Image startImage = assets().getImage("images/start.png");
+    this.startButton = graphics().createImageLayer(startImage);
+    startButton.setTranslation(140, 320);
+    
+    startButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        ss.push(testScreen); 
+      }
+    });
+  }
+
+  //=============================================================
+  @Override
+  public void wasShown (){
+    super.wasShown();
+    this.layer.add(bg);
+    this.layer.add(startButton);
+  
+  }
+}
+*********************************************************
+package sut.game01.core;
+
+
+import static playn.core.PlayN.*;
+import playn.core.Image;
+import playn.core.ImageLayer;
+import playn.core.ImageLayer;
+import playn.core.Mouse;
+
+import tripleplay.game.Screen;
+import react.UnitSlot;
+import tripleplay.game.UIScreen;
+import tripleplay.game.ScreenStack;
+import tripleplay.ui.*;
+import tripleplay.ui.layout.AxisLayout;
+import static playn.core.PlayN.graphics;
+
+
+
+public class TestScreen extends Screen  {
+
+  private final ScreenStack ss;
+  private final ImageLayer bg;
+  private final ImageLayer backButton;
+  private Root root;
+
+  public TestScreen(final ScreenStack ss){
+    this.ss = ss;
+    Image bgImage = assets().getImage("images/bg.png");
+    this.bg = graphics().createImageLayer(bgImage);
+    
+
+    Image backImage = assets().getImage("images/back.png");
+    this.backButton = graphics().createImageLayer(backImage);
+    backButton.setTranslation(10, 10);
+    
+    backButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        ss.remove(ss.top()); // pop screen
+      }
+    });
+  }
+
+  //=============================================================
+  @Override
+  public void wasShown (){
+    super.wasShown();
+    this.layer.add(bg);
+    this.layer.add(backButton);
+  
+  }
+}
+**********************************************************************

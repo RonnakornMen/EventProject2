@@ -17,19 +17,19 @@ import static playn.core.PlayN.graphics;
 
 
 
-public class PauseScreen extends Screen  {
+public class OverScreen extends Screen  {
 
   private final ScreenStack ss;
 
-  private final GameScreen gameScreen;
+  //private final GameScreen gameScreen;
   private final ImageLayer bg;
   private final ImageLayer backButton;
 
   private Root root;
 
-  public PauseScreen(final ScreenStack ss){
+  public OverScreen(final ScreenStack ss){
     this.ss = ss;
-    this.gameScreen =new GameScreen(ss);
+    //this.gameScreen =new GameScreen(ss);
 
 
 
