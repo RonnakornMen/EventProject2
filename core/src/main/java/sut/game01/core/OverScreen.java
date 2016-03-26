@@ -24,6 +24,10 @@ public class OverScreen extends Screen  {
   //private final GameScreen gameScreen;
   private final ImageLayer bg;
   private final ImageLayer backButton;
+  private final ImageLayer window;
+  private final ImageLayer reButton;
+  private final ImageLayer levelButton;
+  private final ImageLayer homeButton;
 
   private Root root;
 
@@ -33,8 +37,48 @@ public class OverScreen extends Screen  {
 
 
 
-    Image bgImage = assets().getImage("images/pausePage.png");
+    Image bgImage = assets().getImage("images/bg.png");
     this.bg = graphics().createImageLayer(bgImage);
+    //=============================================================window
+    Image windowImage = assets().getImage("images/window2.png");
+    this.window = graphics().createImageLayer(windowImage);
+    window.setTranslation(110, 20);
+
+    Image reButtonImage = assets().getImage("images/reButton2.png");
+    this.reButton = graphics().createImageLayer(reButtonImage);
+    reButton.setTranslation(140, 170);
+
+    reButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        ss.remove(ss.top());
+
+         }
+    });
+
+    Image levelButtonImage = assets().getImage("images/levelButton.png");
+    this.levelButton = graphics().createImageLayer(levelButtonImage);
+    levelButton.setTranslation(255, 170);
+
+    levelButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        //ss.remove(ss.top());
+
+         }
+    });
+
+    Image homeButtonImage = assets().getImage("images/homeButton.png");
+    this.homeButton = graphics().createImageLayer(homeButtonImage);
+    homeButton.setTranslation(360, 170);
+
+    homeButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+        //ss.remove(ss.top());
+
+         }
+    });
     
     //====================================================================backButton
     Image backImage = assets().getImage("images/back.png");
@@ -68,7 +112,11 @@ public class OverScreen extends Screen  {
   public void wasShown (){
     super.wasShown();
     this.layer.add(bg);
-    this.layer.add(backButton);
+    this.layer.add(window);
+    this.layer.add(reButton);
+    this.layer.add(levelButton);
+    this.layer.add(homeButton);
+    //this.layer.add(backButton);
   
   }
 }
