@@ -25,6 +25,7 @@ public class HomeScreen extends Screen  {
   private final ImageLayer startButton;
   private final ImageLayer settingButton;
   private final ImageLayer faceButton;
+  private final ImageLayer name;
   private Root root;
 
   public HomeScreen(final ScreenStack ss){
@@ -33,6 +34,12 @@ public class HomeScreen extends Screen  {
     this.settingScreen =new SettingScreen(ss);
     Image bgImage = assets().getImage("images/bg.png");
     this.bg = graphics().createImageLayer(bgImage);
+
+    //=============================================================name
+    Image nameImage = assets().getImage("images/name.png");
+    this.name = graphics().createImageLayer(nameImage);
+    name.setTranslation(160, 32);
+
     
     //=============================================================START
     Image startImage = assets().getImage("images/startButton.png");
@@ -58,7 +65,7 @@ public class HomeScreen extends Screen  {
     settingButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        //ss.push(settingScreen); 
+        ss.push(settingScreen); 
       }
     });
     
@@ -72,6 +79,7 @@ public class HomeScreen extends Screen  {
     this.layer.add(startButton);  
     this.layer.add(settingButton);
     this.layer.add(faceButton);
+    this.layer.add(name);
   }
 }
 
