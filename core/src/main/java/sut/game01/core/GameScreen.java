@@ -26,6 +26,8 @@ public class GameScreen extends Screen  {
   private final ImageLayer backButton;
   private final ImageLayer settingButton;
   private final ImageLayer pauseButton;
+  private final ImageLayer overButton;
+
   private Root root;
 
   public GameScreen(final ScreenStack ss){
@@ -34,7 +36,7 @@ public class GameScreen extends Screen  {
     this.overScreen =new OverScreen(ss);
 
 
-    Image bgImage = assets().getImage("images/gamePage.png");
+    Image bgImage = assets().getImage("images/bg.png");
     this.bg = graphics().createImageLayer(bgImage);
     
     //====================================================================backButton
@@ -62,16 +64,26 @@ public class GameScreen extends Screen  {
     //=============================================================================pauseButton=====
     Image pauseImage = assets().getImage("images/pauseButton.png");
     this.pauseButton = graphics().createImageLayer(pauseImage);
-    pauseButton.setTranslation(200, 10);
+    pauseButton.setTranslation(270, 0);
     
     pauseButton.addListener(new Mouse.LayerAdapter(){
+      @Override
+      public void onMouseUp(Mouse.ButtonEvent event){
+       // ss.push(overScreen); 
+      }
+    });
+
+    //==================================================================================over
+    Image overImage = assets().getImage("images/overButton.png");
+    this.overButton = graphics().createImageLayer(overImage);
+    overButton.setTranslation(40, 390);
+    
+    overButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
         ss.push(overScreen); 
       }
     });
-
-
 
   }
  //=============================================================
@@ -79,9 +91,10 @@ public class GameScreen extends Screen  {
   public void wasShown (){
     super.wasShown();
     this.layer.add(bg);
-    this.layer.add(backButton);
-    this.layer.add(settingButton);
+    //this.layer.add(backButton);
+    //this.layer.add(settingButton);
     this.layer.add(pauseButton);
+    this.layer.add(overButton);
   
   }
 }
