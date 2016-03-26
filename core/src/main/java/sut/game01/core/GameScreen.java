@@ -21,17 +21,17 @@ public class GameScreen extends Screen  {
 
   private final ScreenStack ss;
   private final SettingScreen settingScreen;
-  //private final PauseScreen pauseScreen;
+  private final OverScreen overScreen;
   private final ImageLayer bg;
   private final ImageLayer backButton;
   private final ImageLayer settingButton;
-  //private final ImageLayer pauseButton;
+  private final ImageLayer pauseButton;
   private Root root;
 
   public GameScreen(final ScreenStack ss){
     this.ss = ss;
     this.settingScreen =new SettingScreen(ss);
-    //this.pauseScreen =new PauseScreen(ss);
+    this.overScreen =new OverScreen(ss);
 
 
     Image bgImage = assets().getImage("images/gamePage.png");
@@ -60,16 +60,16 @@ public class GameScreen extends Screen  {
       }
     });
     //=============================================================================pauseButton=====
-    /*Image pauseImage = assets().getImage("images/pauseButton.png");
+    Image pauseImage = assets().getImage("images/pauseButton.png");
     this.pauseButton = graphics().createImageLayer(pauseImage);
     pauseButton.setTranslation(200, 10);
     
     pauseButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        ss.push(pauseScreen); 
+        ss.push(overScreen); 
       }
-    });*/
+    });
 
 
 
@@ -81,7 +81,7 @@ public class GameScreen extends Screen  {
     this.layer.add(bg);
     this.layer.add(backButton);
     this.layer.add(settingButton);
-    //this.layer.add(pauseButton);
+    this.layer.add(pauseButton);
   
   }
 }
