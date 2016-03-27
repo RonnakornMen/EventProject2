@@ -26,13 +26,13 @@ public class SettingScreen extends Screen  {
 
   public SettingScreen(final ScreenStack ss){
     this.ss = ss;
-    Image bgImage = assets().getImage("images/settingPage.png");
+    Image bgImage = assets().getImage("images/bg.png");
     this.bg = graphics().createImageLayer(bgImage);
     
 
-    Image backImage = assets().getImage("images/back.png");
+    Image backImage = assets().getImage("images/backButton.png");
     this.backButton = graphics().createImageLayer(backImage);
-    backButton.setTranslation(10, 10);
+    backButton.setTranslation(40, 390);
     
     backButton.addListener(new Mouse.LayerAdapter(){
       @Override
