@@ -63,7 +63,8 @@ public class OverScreen extends Screen  {
     levelButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        //ss.remove(ss.top());
+        ss.remove(ss.top()); 
+        ss.remove(ss.top()); 
 
          }
     });
@@ -75,8 +76,9 @@ public class OverScreen extends Screen  {
     homeButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        //ss.remove(ss.top());
-
+        ss.remove(ss.top()); 
+        ss.remove(ss.top());
+        ss.remove(ss.top());
          }
     });
     

@@ -14,13 +14,14 @@ import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
-
+import sut.game01.core.HomeScreen;
+import sut.game01.core.LevelScreen;
 
 
 public class EndScreen extends Screen  {
 
   private final ScreenStack ss;
-
+  //private final HomeScreen homeScreen;
   //private final GameScreen gameScreen;
   private final ImageLayer bg;
   private final ImageLayer backButton;
@@ -28,13 +29,14 @@ public class EndScreen extends Screen  {
   private final ImageLayer reButton;
   private final ImageLayer levelButton;
   private final ImageLayer homeButton;
+  //private final LevelScreen levelScreen;
 
   private Root root;
 
   public EndScreen(final ScreenStack ss){
     this.ss = ss;
-    //this.gameScreen =new GameScreen(ss);
-
+   // this.homeScreen =new HomeScreen(ss);
+   // this.levelScreen =new LevelScreen(ss);
 
 
     Image bgImage = assets().getImage("images/bg.png");
@@ -63,8 +65,8 @@ public class EndScreen extends Screen  {
     levelButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        //ss.remove(ss.top());
-
+          ss.remove(ss.top()); 
+          ss.remove(ss.top()); 
          }
     });
 
@@ -75,8 +77,9 @@ public class EndScreen extends Screen  {
     homeButton.addListener(new Mouse.LayerAdapter(){
       @Override
       public void onMouseUp(Mouse.ButtonEvent event){
-        //ss.remove(ss.top());
-
+          ss.remove(ss.top()); 
+          ss.remove(ss.top()); 
+          ss.remove(ss.top());
          }
     });
     
