@@ -65,14 +65,14 @@ public class Mike   {
 			}
 		});
 
-		sprite = SpriteLoader.getSprite("images/mike.json");
+		sprite = SpriteLoader.getSprite("images/mike2.json");
 		sprite.addCallback(new Callback<Sprite>(){
 			@Override
 			public void onSuccess(Sprite result){
 				sprite.setSprite(spriteIndex);
 				sprite.layer().setOrigin(sprite.width() /2f,
 										 sprite.height() /2f);
-				sprite.layer().setTranslation(300, 225);
+				//sprite.layer().setTranslation(300, 225);
 				hasLoaded = true;
 			}
 			@Override
@@ -116,6 +116,7 @@ public class Mike   {
 			sprite.setSprite(spriteIndex);
 			e = 0;
 		}
+	sprite.layer().setTranslation(60 , 400);
 	}
 	
   
