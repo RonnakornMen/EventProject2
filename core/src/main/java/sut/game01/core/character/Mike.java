@@ -28,7 +28,7 @@ public class Mike   {
 	private boolean hasLoaded = false;
 
 	public enum State {
-		IDLE, RUN, ATTK
+		IDLE, WALK
 	};
 
 	private State state = State.IDLE;
@@ -40,28 +40,15 @@ public class Mike   {
 		PlayN.keyboard().setListener(new Keyboard.Adapter(){	
 			@Override
 			public void onKeyUp(Keyboard.Event event){
-				if (event.key() == Key.RIGHT) {
+			if (event.key() == Key.SPACE) {
 					switch (state){
-						case IDLE: state = State.RUN; break;
+						case IDLE: state = State.WALK; break;
 						//case RUN: state = State.ATTK; break;
 						//case ATTK: state = State.IDLE; break;
 					}
 				}
-				else if (event.key() == Key.SPACE) {
-					switch (state){
-						//case IDLE: state = State.RUN; break;
-						case RUN: state = State.ATTK; break;
-						//case ATTK: state = State.IDLE; break;
-					}
-				}
-				else if (event.key() == Key.ENTER) {
-					switch (state){
-						//case IDLE: state = State.RUN; break;
-						//case RUN: state = State.ATTK; break;
-						case ATTK: state = State.IDLE; break;
-					}
-				}
-				System.out.println(event.key());
+				
+				
 			}
 		});
 
@@ -100,11 +87,11 @@ public class Mike   {
 		if (e > 150) {
 			switch(state){
 				case IDLE: offset =0; break;
-				case RUN:  offset =4; break;
-				case ATTK: offset =8; break;
+				case WALK: offset =4; break;
+				
 			}
 		
-			spriteIndex = offset + ((spriteIndex +1 ) %4);
+			spriteIndex = offset + ((spriteIndex +1 ) %6);
 			sprite.setSprite(spriteIndex);
 			e = 0;
 		}
