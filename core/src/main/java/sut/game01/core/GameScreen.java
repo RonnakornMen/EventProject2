@@ -14,6 +14,7 @@ import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
+import sut.game01.core.character.Mike;
 
 
 
@@ -29,6 +30,7 @@ public class GameScreen extends Screen  {
   private final ImageLayer pauseButton;
   private final ImageLayer overButton;
   private final ImageLayer endButton;
+  private Mike mike;
 
   private Root root;
 
@@ -109,6 +111,13 @@ public class GameScreen extends Screen  {
     this.layer.add(pauseButton);
     this.layer.add(overButton);
     this.layer.add(endButton);
+    mike = new Mike(560f, 400f);
+    this.layer.add(mike.layer());
   
+  }
+  @Override
+  public void update(int delta){
+    super.update(delta);
+    mike.update(delta);
   }
 }
