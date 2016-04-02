@@ -81,7 +81,7 @@ public class GameScreen extends Screen  {
     //==================================================================================over
     Image overImage = assets().getImage("images/overButton.png");
     this.overButton = graphics().createImageLayer(overImage);
-    overButton.setTranslation(40, 390);
+    overButton.setTranslation(40, 0);
     
     overButton.addListener(new Mouse.LayerAdapter(){
       @Override
@@ -92,7 +92,7 @@ public class GameScreen extends Screen  {
     //==================================================================================end
     Image endImage = assets().getImage("images/endButton.png");
     this.endButton = graphics().createImageLayer(endImage);
-    endButton.setTranslation(540, 390);
+    endButton.setTranslation(540, 0);
     
     endButton.addListener(new Mouse.LayerAdapter(){
       @Override
