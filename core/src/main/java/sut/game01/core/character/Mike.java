@@ -102,7 +102,10 @@ public class Mike   {
 			switch(state){
 				case IDLE: offset =0; break;
 				case WALK: offset =4; break;
-				case THROW: offset =10; break;
+				case THROW: offset =10;
+							if (spriteIndex ==12) {
+								state = State.IDLE;
+							} break;
 				
 			}
 			if(state == State.IDLE){
