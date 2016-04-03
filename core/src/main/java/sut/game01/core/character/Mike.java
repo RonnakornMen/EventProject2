@@ -26,6 +26,7 @@ public class Mike   {
 	private Sprite sprite;
 	private int spriteIndex = 0;
 	private boolean hasLoaded = false;
+	private float x= 60;
 
 	public enum State {
 		IDLE, WALK, THROW
@@ -116,7 +117,12 @@ public class Mike   {
 			sprite.setSprite(spriteIndex);
 			e = 0;
 		}
-	sprite.layer().setTranslation(60 , 400);
+	//sprite.layer().setTranslation(60 , 400);
+	if(state == State.WALK){
+		x += 0.5f * delta /32;
+		
+	}
+	sprite.layer().setTranslation(x , 400);
 	}
 	
   
