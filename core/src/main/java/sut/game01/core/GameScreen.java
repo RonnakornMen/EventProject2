@@ -30,6 +30,11 @@ public class GameScreen extends Screen  {
   private final ImageLayer pauseButton;
   private final ImageLayer overButton;
   private final ImageLayer endButton;
+  private final ImageLayer cloud;
+  private Image bgImage;
+  private Image cloudImage;
+  private float xC= 24.0f;
+  private float yC = 100;
   private Mike mike;
 
   private Root root;
@@ -41,7 +46,7 @@ public class GameScreen extends Screen  {
     this.endScreen =new EndScreen(ss);
 
 
-    Image bgImage = assets().getImage("images/bg.png");
+    bgImage = assets().getImage("images/bg.png");
     this.bg = graphics().createImageLayer(bgImage);
     
     //====================================================================backButton
@@ -100,6 +105,11 @@ public class GameScreen extends Screen  {
         ss.push(endScreen); 
       }
     });
+    //==========================================================================clound
+    cloudImage = assets().getImage("images/cloud.png");
+    cloud = graphics().createImageLayer(cloudImage);
+    graphics().rootLayer().add(cloud);
+    cloud.setTranslation(0, 105);
   }
  //=============================================================
   @Override
@@ -113,11 +123,19 @@ public class GameScreen extends Screen  {
     this.layer.add(endButton);
     mike = new Mike(560f, 400f);
     this.layer.add(mike.layer());
+    this.layer.add(cloud);
   
   }
   @Override
   public void update(int delta){
     super.update(delta);
     mike.update(delta);
+    //=========================================moveCloud
+     xC += 0.5f * delta /8;
+    if (xC> bgImage.width() + cloudImage.width()){
+      xC = -cloudImage.width(); 
+    }
+    cloud.setTranslation(xC, yC);
+  
   }
 }
