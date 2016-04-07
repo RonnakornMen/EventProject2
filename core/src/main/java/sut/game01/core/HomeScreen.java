@@ -6,7 +6,9 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.ImageLayer;
 import playn.core.Mouse;
-
+import playn.core.Keyboard;
+import playn.core.*;
+import playn.core.PlayN;
 import tripleplay.game.Screen;
 import react.UnitSlot;
 import tripleplay.game.UIScreen;
@@ -14,7 +16,7 @@ import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
-
+import playn.core.util.*;
 
 public class HomeScreen extends Screen  {
 
@@ -80,6 +82,14 @@ public class HomeScreen extends Screen  {
     this.layer.add(settingButton);
     this.layer.add(faceButton);
     this.layer.add(name);
+    PlayN.keyboard().setListener(new Keyboard.Adapter(){
+          @Override
+          public void onKeyUp(Keyboard.Event event){
+              if (event.key() == Key.ENTER){
+                  ss.push(levelScreen);
+              }
+          }
+      });
   }
 }
 
