@@ -28,9 +28,10 @@ public class Mike   {
 	private boolean hasLoaded = false;
 	private float x= 60;
 	private int action = 0; 
+	private int a =0;
 
 	public enum State {
-		IDLE, WALK, THROW
+		IDLE, WALK, THROW, BACK
 	};
 
 	private State state = State.IDLE;
@@ -50,6 +51,14 @@ public class Mike   {
 						case THROW: state = State.WALK; break;
 					}
 				}
+			else if (event.key() == Key.LEFT) {
+				action = 1;
+					switch (state){
+						case IDLE: if(action ==1){state = State.BACK;} break;
+						//case WALK: state = State.THROW; break;
+						case THROW: state = State.WALK; break;
+					}
+				}	
 			else if (event.key() == Key.SPACE) {
 					switch (state){
 						//case IDLE: state = State.WALK; break;
@@ -75,6 +84,13 @@ public class Mike   {
 					}
 					
 				}
+			if (event.key() == Key.LEFT) {
+					action = 0;
+					if(action ==0&& state == State.BACK){
+						state = State.IDLE;
+					}
+					
+				}	
 			}
 		});
 
@@ -114,6 +130,8 @@ public class Mike   {
 			switch(state){
 				case IDLE: offset =0; break;
 				case WALK: offset =4; break;
+				case BACK: offset =9; break;
+
 				case THROW: offset =10;
 							if (spriteIndex ==12) {
 								state = State.IDLE;
@@ -126,6 +144,9 @@ public class Mike   {
 			else if(state == State.WALK){
 				spriteIndex = offset + ((spriteIndex +1 ) %6);
 			}
+			else if(state == State.BACK){
+				spriteIndex = offset - (a++ %6);
+			}
 			else if(state == State.THROW){
 				spriteIndex = offset + ((spriteIndex +1 ) %3);
 			}
@@ -135,6 +156,11 @@ public class Mike   {
 	//sprite.layer().setTranslation(60 , 400);
 	if(state == State.WALK){
 		x += 0.5f * delta /32;
+		
+	}
+	else if
+		(state == State.BACK){
+		x -= 0.5f * delta /32;
 		
 	}
 	sprite.layer().setTranslation(x , 400);
