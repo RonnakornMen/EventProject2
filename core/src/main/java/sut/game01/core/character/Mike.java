@@ -27,6 +27,7 @@ public class Mike   {
 	private int spriteIndex = 0;
 	private boolean hasLoaded = false;
 	private float x= 60;
+	private int action = 0; 
 
 	public enum State {
 		IDLE, WALK, THROW
@@ -42,8 +43,9 @@ public class Mike   {
 			@Override
 			public void onKeyDown(Keyboard.Event event){
 			if (event.key() == Key.RIGHT) {
+				action = 1;
 					switch (state){
-						case IDLE: state = State.WALK; break;
+						case IDLE: if(action ==1){state = State.WALK;} break;
 						//case WALK: state = State.THROW; break;
 						case THROW: state = State.WALK; break;
 					}
@@ -63,6 +65,16 @@ public class Mike   {
 					}
 				}	
 				
+			}
+
+			public void onKeyUp(Keyboard.Event event){
+			if (event.key() == Key.RIGHT) {
+					action = 0;
+					if(action ==0&& state == State.WALK){
+						state = State.IDLE;
+					}
+					
+				}
 			}
 		});
 
@@ -96,7 +108,7 @@ public class Mike   {
 	
 	public void update(int delta) {
 		if (hasLoaded == false) return;
-
+		System.out.println(action);
 		e = e +delta;
 		if (e > 150) {
 			switch(state){
