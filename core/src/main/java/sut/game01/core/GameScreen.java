@@ -15,10 +15,11 @@ import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
 import sut.game01.core.character.Mike;
+//import sut.game01.core.gauge.Gauge;
 
 
 
-public class GameScreen extends Screen  {
+public class GameScreen extends Screen {
 
   private final ScreenStack ss;
   private final SettingScreen settingScreen;
@@ -40,6 +41,19 @@ public class GameScreen extends Screen  {
   private final ImageLayer greenBin;
   private final ImageLayer wall;
   private Mike mike;
+ // private Gauge gauge;
+
+  private  ImageLayer gauge0;
+  private  ImageLayer gauge1;
+  private  ImageLayer gauge2;
+  private  ImageLayer gauge3;
+  private  ImageLayer gauge4;
+  private  ImageLayer gauge5;
+  private  ImageLayer gauge6;
+  private  ImageLayer gauge7;
+  private  ImageLayer gauge8;
+  private  ImageLayer gauge9;
+  private  ImageLayer gauge10;
 
   private Root root;
 
@@ -130,6 +144,9 @@ public class GameScreen extends Screen  {
     Image wallImage = assets().getImage("images/wall.png");
     this.wall = graphics().createImageLayer(wallImage);
     wall.setTranslation(320, 320);
+
+    gauge();
+    //gaugeShow();
   }
  //=============================================================
   @Override
@@ -148,6 +165,45 @@ public class GameScreen extends Screen  {
     this.layer.add(yellowBin);
     this.layer.add(greenBin);
     this.layer.add(wall);
+    /*int g = 0;
+      for(g=0;g<=10;g++){
+        if(g == 0){
+          this.layer.add(gauge0);
+        }
+        else if(g ==1){
+          this.layer.add(gauge1);
+        }
+        else if(g ==2){
+          this.layer.add(gauge2);
+        }
+        else if(g ==3){
+          this.layer.add(gauge3);
+        }
+        else if(g ==4){
+          this.layer.add(gauge4);
+        }
+        else if(g ==5){
+          this.layer.add(gauge5);
+        }
+        else if(g ==6){
+          this.layer.add(gauge6);
+        }
+        else if(g ==7){
+          this.layer.add(gauge7);
+        }
+        else if(g ==8){
+          this.layer.add(gauge8);
+        }
+        else if(g ==9){
+          this.layer.add(gauge9);
+        }
+        else if(g ==10){
+          this.layer.add(gauge10);
+          g=0;
+        }
+      }*/
+   
+    
   
   }
   @Override
@@ -162,4 +218,88 @@ public class GameScreen extends Screen  {
     cloud.setTranslation(xC, yC);
   
   }
+  public  void gauge(){
+    Image gauge0Image = assets().getImage("images/gauge/gauge0.png");
+      this.gauge0 = graphics().createImageLayer(gauge0Image);
+      gauge0.setTranslation(10, 10);
+
+      Image gauge1Image = assets().getImage("images/gauge/gauge1.png");
+      this.gauge1 = graphics().createImageLayer(gauge1Image);
+      gauge1.setTranslation(10, 10);
+
+      Image gauge2Image = assets().getImage("images/gauge/gauge2.png");
+      this.gauge2 = graphics().createImageLayer(gauge2Image);
+      gauge2.setTranslation(10, 10);
+
+      Image gauge3Image = assets().getImage("images/gauge/gauge3.png");
+      this.gauge3 = graphics().createImageLayer(gauge3Image);
+      gauge3.setTranslation(10, 10);
+
+      Image gauge4Image = assets().getImage("images/gauge/gauge4.png");
+      this.gauge4 = graphics().createImageLayer(gauge4Image);
+      gauge4.setTranslation(10, 10);
+
+      Image gauge5Image = assets().getImage("images/gauge/gauge5.png");
+      this.gauge5 = graphics().createImageLayer(gauge5Image);
+      gauge5.setTranslation(10, 10);
+
+      Image gauge6Image = assets().getImage("images/gauge/gauge6.png");
+      this.gauge6 = graphics().createImageLayer(gauge6Image);
+      gauge6.setTranslation(10, 10);
+
+      Image gauge7Image = assets().getImage("images/gauge/gauge7.png");
+      this.gauge7 = graphics().createImageLayer(gauge7Image);
+      gauge7.setTranslation(10, 10);
+
+      Image gauge8Image = assets().getImage("images/gauge/gauge8.png");
+      this.gauge8 = graphics().createImageLayer(gauge8Image);
+      gauge8.setTranslation(10, 10);
+
+      Image gauge9Image = assets().getImage("images/gauge/gauge9.png");
+      this.gauge9 = graphics().createImageLayer(gauge9Image);
+      gauge9.setTranslation(10, 10);
+
+      Image gauge10Image = assets().getImage("images/gauge/gauge10.png");
+      this.gauge10 = graphics().createImageLayer(gauge10Image);
+
+  }
+  /*public void gaugeShow(){
+    int g = 0;
+      for(g=0;g<=10;g++){
+        if(g == 0){
+          this.layer.add(gauge0);
+        }
+        else if(g ==1){
+          this.layer.add(gauge1);
+        }
+        else if(g ==2){
+          this.layer.add(gauge2);
+        }
+        else if(g ==3){
+          this.layer.add(gauge3);
+        }
+        else if(g ==4){
+          this.layer.add(gauge4);
+        }
+        else if(g ==5){
+          this.layer.add(gauge5);
+        }
+        else if(g ==6){
+          this.layer.add(gauge6);
+        }
+        else if(g ==7){
+          this.layer.add(gauge7);
+        }
+        else if(g ==8){
+          this.layer.add(gauge8);
+        }
+        else if(g ==9){
+          this.layer.add(gauge9);
+        }
+        else if(g ==10){
+          this.layer.add(gauge10);
+          g=0;
+        }
+      }
+  }*/
 }

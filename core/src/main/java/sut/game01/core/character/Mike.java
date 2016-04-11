@@ -124,7 +124,7 @@ public class Mike   {
 	
 	public void update(int delta) {
 		if (hasLoaded == false) return;
-		System.out.println(action);
+		//System.out.println(action);
 		e = e +delta;
 		if (e > 150) {
 			switch(state){
@@ -155,12 +155,12 @@ public class Mike   {
 		}
 	//sprite.layer().setTranslation(60 , 400);
 	if(state == State.WALK){
-		x += 0.5f * delta /32;
+		x += 0.5f * delta /16;
 		
 	}
 	else if
 		(state == State.BACK){
-		x -= 0.5f * delta /32;
+		x -= 0.5f * delta /16;
 		
 	}
 	sprite.layer().setTranslation(x , 400);
