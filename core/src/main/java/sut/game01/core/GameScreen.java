@@ -35,6 +35,10 @@ public class GameScreen extends Screen  {
   private Image cloudImage;
   private float xC= 24.0f;
   private float yC = 100;
+  private final ImageLayer blueBin;
+  private final ImageLayer yellowBin;
+  private final ImageLayer greenBin;
+  private final ImageLayer wall;
   private Mike mike;
 
   private Root root;
@@ -110,6 +114,22 @@ public class GameScreen extends Screen  {
     cloud = graphics().createImageLayer(cloudImage);
     graphics().rootLayer().add(cloud);
     cloud.setTranslation(0, 105);
+    //===========================================================================bluebin
+    Image blueBinImage = assets().getImage("images/blueBin.png");
+    this.blueBin = graphics().createImageLayer(blueBinImage);
+    blueBin.setTranslation(360, 360);
+    //===========================================================================yellowbin
+    Image yellowBinImage = assets().getImage("images/yellowBin.png");
+    this.yellowBin = graphics().createImageLayer(yellowBinImage);
+    yellowBin.setTranslation(460, 360);
+    //===========================================================================greenbin
+    Image greenBinImage = assets().getImage("images/greenBin.png");
+    this.greenBin = graphics().createImageLayer(greenBinImage);
+    greenBin.setTranslation(560, 360);
+    //===========================================================================wall
+    Image wallImage = assets().getImage("images/wall.png");
+    this.wall = graphics().createImageLayer(wallImage);
+    wall.setTranslation(320, 320);
   }
  //=============================================================
   @Override
@@ -124,6 +144,10 @@ public class GameScreen extends Screen  {
     mike = new Mike(560f, 400f);
     this.layer.add(mike.layer());
     this.layer.add(cloud);
+    this.layer.add(blueBin);
+    this.layer.add(yellowBin);
+    this.layer.add(greenBin);
+    this.layer.add(wall);
   
   }
   @Override
