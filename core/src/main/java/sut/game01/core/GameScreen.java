@@ -2,11 +2,17 @@ package sut.game01.core;
 
 
 import static playn.core.PlayN.*;
-import playn.core.Image;
-import playn.core.ImageLayer;
-import playn.core.ImageLayer;
-import playn.core.Mouse;
 
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.collision.shapes.EdgeShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.World;
+import playn.core.*;
+import playn.core.ImageLayer;
+
+import playn.core.util.Clock;
 import tripleplay.game.Screen;
 import react.UnitSlot;
 import tripleplay.game.UIScreen;
@@ -42,22 +48,24 @@ public class GameScreen extends Screen {
   private final ImageLayer wall;
   private Mike mike;
   private Gauge gauge;
+  private final ImageLayer mario;
 
-  private  ImageLayer gauge0;
-  private  ImageLayer gauge1;
-  private  ImageLayer gauge2;
-  private  ImageLayer gauge3;
-  private  ImageLayer gauge4;
-  private  ImageLayer gauge5;
-  private  ImageLayer gauge6;
-  private  ImageLayer gauge7;
-  private  ImageLayer gauge8;
-  private  ImageLayer gauge9;
-  private  ImageLayer gauge10;
-
+  private int b=0;
+  private float yM = 395;
   private Root root;
 
-  public GameScreen(final ScreenStack ss){
+    public static float M_PER_PIXEL = 1 / 26.666667f;
+    private static int width = 24;
+    private static int height = 18;
+
+
+    private World world;
+    private boolean showDebugDraw = true;
+    private DebugDrawBox2D debugDraw;
+
+
+
+    public GameScreen(final ScreenStack ss){
     this.ss = ss;
     this.settingScreen =new SettingScreen(ss);
     this.overScreen =new OverScreen(ss);
@@ -145,8 +153,16 @@ public class GameScreen extends Screen {
     this.wall = graphics().createImageLayer(wallImage);
     wall.setTranslation(320, 320);
 
-  
+    //==================================================================mario
+    Image marioImage = assets().getImage("images/mario.png");
+    this.mario = graphics().createImageLayer(marioImage);
+    mario.setTranslation(360, yM);
     //gaugeShow();
+
+     Vec2 gravity = new Vec2(0.0f, 10.0f);
+     world = new World(gravity);
+     world.setWarmStarting(true);
+     world.setAutoClearForces(true);
   }
  //=============================================================
   @Override
@@ -155,10 +171,11 @@ public class GameScreen extends Screen {
     this.layer.add(bg);
     //this.layer.add(backButton);
     //this.layer.add(settingButton);
+    //this.layer.add(mario);
     this.layer.add(pauseButton);
     this.layer.add(overButton);
     this.layer.add(endButton);
-    mike = new Mike(560f, 400f);
+    mike = new Mike(world,100f,480f);
     this.layer.add(mike.layer());
     this.layer.add(cloud);
     this.layer.add(blueBin);
@@ -167,98 +184,74 @@ public class GameScreen extends Screen {
     this.layer.add(wall);
     gauge = new Gauge(10f, 10f);
     this.layer.add(gauge.layer());
-    /*int g = 0;
-      for(g=0;g<=10;g++){
-        if(g == 0){
-          this.layer.add(gauge0);
-        }
-        else if(g ==1){
-          this.layer.add(gauge1);
-        }
-        else if(g ==2){
-          this.layer.add(gauge2);
-        }
-        else if(g ==3){
-          this.layer.add(gauge3);
-        }
-        else if(g ==4){
-          this.layer.add(gauge4);
-        }
-        else if(g ==5){
-          this.layer.add(gauge5);
-        }
-        else if(g ==6){
-          this.layer.add(gauge6);
-        }
-        else if(g ==7){
-          this.layer.add(gauge7);
-        }
-        else if(g ==8){
-          this.layer.add(gauge8);
-        }
-        else if(g ==9){
-          this.layer.add(gauge9);
-        }
-        else if(g ==10){
-          this.layer.add(gauge10);
-          g=0;
-        }
-      }*/
-   
-    
-  
+
+      if (showDebugDraw) {
+          CanvasImage image = graphics().createImage(
+                  (int) (width / M_PER_PIXEL),
+                  (int) (height / M_PER_PIXEL)
+          );
+          layer.add(graphics().createImageLayer(image));
+          debugDraw = new DebugDrawBox2D();
+          debugDraw.setCanvas(image);
+          debugDraw.setFlipY(false);
+          debugDraw.setStrokeAlpha(150);
+          debugDraw.setFillAlpha(75);
+          debugDraw.setStrokeWidth(2.0f);
+          debugDraw.setFlags(DebugDraw.e_shapeBit |
+                  DebugDraw.e_jointBit |
+                  DebugDraw.e_aabbBit);
+
+          debugDraw.setCamera(0, 0, 1f /M_PER_PIXEL);
+          world.setDebugDraw(debugDraw);
+      }
+
+      Body ground = world.createBody(new BodyDef());
+      EdgeShape groundShape = new EdgeShape();
+      groundShape.set(new Vec2(0, height), new Vec2(width, height));
+      ground.createFixture(groundShape, 0.0f);
+
+
+
+
   }
   @Override
   public void update(int delta){
     super.update(delta);
     mike.update(delta);
     gauge.update(delta);
+      world.step(0.033f, 10, 10);
     //=========================================moveCloud
      xC += 0.5f * delta /8;
     if (xC> bgImage.width() + cloudImage.width()){
       xC = -cloudImage.width(); 
     }
     cloud.setTranslation(xC, yC);
-  
+
+
+    
+    if (yM > 320 && b==0){
+         yM -= 0.5f * delta /20;
+    }
+    else if(yM >=320 ){
+      b =1;
+      yM += 0.5f * delta /20;
+      if(yM == 395)
+        b=0;
+    }
+    mario.setTranslation(360, yM);
   }
-  
-  /*public void gaugeShow(){
-    int g = 0;
-      for(g=0;g<=10;g++){
-        if(g == 0){
-          this.layer.add(gauge0);
+
+    @Override
+    public void paint(Clock clock) {
+        super.paint(clock);
+        mike.paint(clock);
+
+        if (showDebugDraw) {
+            debugDraw.getCanvas().clear();
+            debugDraw.getCanvas().setFillColor(Color.rgb(255,255,255));
+           // debugDraw.getCanvas().drawText(debugString, 100,100);
+            world.drawDebugData();
         }
-        else if(g ==1){
-          this.layer.add(gauge1);
-        }
-        else if(g ==2){
-          this.layer.add(gauge2);
-        }
-        else if(g ==3){
-          this.layer.add(gauge3);
-        }
-        else if(g ==4){
-          this.layer.add(gauge4);
-        }
-        else if(g ==5){
-          this.layer.add(gauge5);
-        }
-        else if(g ==6){
-          this.layer.add(gauge6);
-        }
-        else if(g ==7){
-          this.layer.add(gauge7);
-        }
-        else if(g ==8){
-          this.layer.add(gauge8);
-        }
-        else if(g ==9){
-          this.layer.add(gauge9);
-        }
-        else if(g ==10){
-          this.layer.add(gauge10);
-          g=0;
-        }
-      }
-  }*/
+    }
+
 }
