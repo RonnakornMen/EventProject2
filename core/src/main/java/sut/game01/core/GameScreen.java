@@ -210,6 +210,20 @@ public class GameScreen extends Screen {
       groundShape.set(new Vec2(0, height), new Vec2(width, height));
       ground.createFixture(groundShape, 0.0f);
 
+      Body ground2 = world.createBody(new BodyDef());
+      EdgeShape groundShape2 = new EdgeShape();
+      groundShape2.set(new Vec2(width, 0), new Vec2(width, height));
+      ground2.createFixture(groundShape2, 0.0f);
+
+      Body ground3 = world.createBody(new BodyDef());
+      EdgeShape groundShape3 = new EdgeShape();
+      groundShape3.set(new Vec2(0, height), new Vec2(0, 0));
+      ground3.createFixture(groundShape3, 0.0f);
+
+      /*Body ground4 = world.createBody(new BodyDef());
+      EdgeShape groundShape4 = new EdgeShape();
+      groundShape4.set(new Vec2(width, height), new Vec2(width, 0));
+      ground4.createFixture(groundShape4, 0.0f);*/
 
 
 
