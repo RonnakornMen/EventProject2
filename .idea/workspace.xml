@@ -2,33 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8b9b604-760a-46ae-a4c6-de9d60119807" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_playn_playn_jbox2d_1_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jbox2d_jbox2d_library_2_2_1_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$2.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$3.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$4.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$5.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen$5.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/GameScreen.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/gauge/Gauge$1.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/gauge/Gauge$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/gauge/Gauge$State.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/gauge/Gauge$State.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/gauge/Gauge.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/gauge/Gauge.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$1.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$2.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$3.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$State.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike$State.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike.class" afterPath="$PROJECT_DIR$/core/target/classes/sut/game01/core/character/Mike.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/target/game01-core-1.0-SNAPSHOT-sources.jar" afterPath="$PROJECT_DIR$/core/target/game01-core-1.0-SNAPSHOT-sources.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/main/java/sut/game01/core/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/main/java/sut/game01/core/GameScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/main/java/sut/game01/core/gauge/Gauge.java" afterPath="$PROJECT_DIR$/core/src/main/java/sut/game01/core/gauge/Gauge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/main/java/sut/game01/core/character/Mike.java" afterPath="$PROJECT_DIR$/core/src/main/java/sut/game01/core/character/Mike.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/game01-core.iml" afterPath="$PROJECT_DIR$/core/game01-core.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/game01-java.iml" afterPath="$PROJECT_DIR$/java/game01-java.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game01.iml" afterPath="$PROJECT_DIR$/game01.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/pom.xml" afterPath="$PROJECT_DIR$/core/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="game01.iws" />
@@ -60,8 +36,8 @@
       <file leaf-file-name="GameScreen.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/main/java/sut/game01/core/GameScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33410138" vertical-offset="2099" max-vertical-offset="3706">
-              <caret line="177" column="29" selection-start-line="177" selection-start-column="29" selection-end-line="177" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.8041475" vertical-offset="2609" max-vertical-offset="3944">
+              <caret line="219" column="57" selection-start-line="219" selection-start-column="57" selection-end-line="219" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -267,8 +243,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -701,10 +677,10 @@
         <state vertical-scroll-proportion="2.684332" vertical-offset="382" max-vertical-offset="1649">
           <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
           <folding>
-            <element signature="e#1744#1745#0" expanded="true" />
-            <element signature="e#1824#1825#0" expanded="true" />
-            <element signature="e#1871#1872#0" expanded="true" />
-            <element signature="e#1908#1909#0" expanded="true" />
+            <element signature="e#1744#1745#0" expanded="false" />
+            <element signature="e#1824#1825#0" expanded="false" />
+            <element signature="e#1871#1872#0" expanded="false" />
+            <element signature="e#1908#1909#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -745,8 +721,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/main/java/sut/game01/core/GameScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33410138" vertical-offset="2099" max-vertical-offset="3706">
-          <caret line="177" column="29" selection-start-line="177" selection-start-column="29" selection-end-line="177" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.8041475" vertical-offset="2609" max-vertical-offset="3944">
+          <caret line="219" column="57" selection-start-line="219" selection-start-column="57" selection-end-line="219" selection-end-column="57" />
           <folding />
         </state>
       </provider>
