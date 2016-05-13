@@ -13,6 +13,9 @@ import playn.core.*;
 import playn.core.ImageLayer;
 
 import playn.core.util.Clock;
+import sut.game01.core.bin.BlueBin;
+import sut.game01.core.bin.GreenBin;
+import sut.game01.core.bin.YellowBin;
 import tripleplay.game.Screen;
 import react.UnitSlot;
 import tripleplay.game.UIScreen;
@@ -42,12 +45,15 @@ public class GameScreen extends Screen {
   private Image cloudImage;
   private float xC= 24.0f;
   private float yC = 100;
-  private final ImageLayer blueBin;
-  private final ImageLayer yellowBin;
-  private final ImageLayer greenBin;
+  //private final ImageLayer blueBin;
+  //private final ImageLayer yellowBin;
+ // private final ImageLayer greenBin;
   private final ImageLayer wall;
   private Mike mike;
   private Gauge gauge;
+  private BlueBin blueBin;
+  private GreenBin greenBin;
+  private YellowBin yellowBin;
   private final ImageLayer mario;
 
   private int b=0;
@@ -137,17 +143,17 @@ public class GameScreen extends Screen {
     graphics().rootLayer().add(cloud);
     cloud.setTranslation(0, 105);
     //===========================================================================bluebin
-    Image blueBinImage = assets().getImage("images/blueBin.png");
+    /*Image blueBinImage = assets().getImage("images/blueBin.png");
     this.blueBin = graphics().createImageLayer(blueBinImage);
-    blueBin.setTranslation(360, 360);
+    blueBin.setTranslation(360, 360);*/
     //===========================================================================yellowbin
-    Image yellowBinImage = assets().getImage("images/yellowBin.png");
+    /*Image yellowBinImage = assets().getImage("images/yellowBin.png");
     this.yellowBin = graphics().createImageLayer(yellowBinImage);
-    yellowBin.setTranslation(460, 360);
+    yellowBin.setTranslation(460, 360);*/
     //===========================================================================greenbin
-    Image greenBinImage = assets().getImage("images/greenBin.png");
+    /*Image greenBinImage = assets().getImage("images/greenBin.png");
     this.greenBin = graphics().createImageLayer(greenBinImage);
-    greenBin.setTranslation(560, 360);
+    greenBin.setTranslation(560, 360);*/
     //===========================================================================wall
     Image wallImage = assets().getImage("images/wall.png");
     this.wall = graphics().createImageLayer(wallImage);
@@ -178,9 +184,12 @@ public class GameScreen extends Screen {
     mike = new Mike(world,100f,480f);
     this.layer.add(mike.layer());
     this.layer.add(cloud);
-    this.layer.add(blueBin);
-    this.layer.add(yellowBin);
-    this.layer.add(greenBin);
+    blueBin = new BlueBin(world,360,480f);
+    this.layer.add(blueBin.layer());
+    yellowBin = new YellowBin(world,460f,480f);
+    this.layer.add(yellowBin.layer());
+    greenBin = new GreenBin(world,560,480f);
+    this.layer.add(greenBin.layer());
     this.layer.add(wall);
     gauge = new Gauge(10f, 10f);
     this.layer.add(gauge.layer());
@@ -233,6 +242,9 @@ public class GameScreen extends Screen {
     super.update(delta);
     mike.update(delta);
     gauge.update(delta);
+    blueBin.update(delta);
+    yellowBin.update(delta);
+    greenBin.update(delta);
       world.step(0.033f, 10, 10);
     //=========================================moveCloud
      xC += 0.5f * delta /8;
@@ -259,7 +271,9 @@ public class GameScreen extends Screen {
     public void paint(Clock clock) {
         super.paint(clock);
         mike.paint(clock);
-
+        blueBin.paint(clock);
+        yellowBin.paint(clock);
+        greenBin.paint(clock);
         if (showDebugDraw) {
             debugDraw.getCanvas().clear();
             debugDraw.getCanvas().setFillColor(Color.rgb(255,255,255));
