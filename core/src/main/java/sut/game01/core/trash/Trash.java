@@ -74,6 +74,7 @@ public class Trash {
 
         });
 
+
     }
 
     public Layer layer() {
@@ -96,8 +97,7 @@ public class Trash {
             sprite.setSprite(spriteIndex);
             e = 0;
         }
-        //sprite.layer().setTranslation(60 , 400);
-        // body.applyForce(new Vec2(move, jump),body.getPosition());
+        //body.applyForce(new Vec2(10f, 0),body.getPosition());
 
     }
 

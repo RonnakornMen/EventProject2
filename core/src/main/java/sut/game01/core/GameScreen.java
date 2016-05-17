@@ -169,11 +169,7 @@ public class GameScreen extends Screen {
      world.setAutoClearForces(true);
 
   }
-    public static void recivePosition(float xMike,float yMike){
-        xMike2 = xMike;
-        yMike2 = yMike;
 
-    }
 
 
  //=============================================================
@@ -199,7 +195,7 @@ public class GameScreen extends Screen {
      t.add(t1, new Trash(world, 350f, 480f));
       layer.add(t.get(t1).layer());
 
-    this.layer.add(wall);
+    //this.layer.add(wall);
     gauge = new Gauge(10f, 10f);
     this.layer.add(gauge.layer());
 
@@ -242,31 +238,16 @@ public class GameScreen extends Screen {
       EdgeShape groundShape4 = new EdgeShape();
       groundShape4.set(new Vec2(width, height), new Vec2(width, 0));
       ground4.createFixture(groundShape4, 0.0f);*/
-      mouse().setListener(new Mouse.Adapter() {
+      /*mouse().setListener(new Mouse.Adapter() {
           @Override
           public void onMouseDown(Mouse.ButtonEvent event) {
-                /*System.out.println(event.x() + " and " +
-                        event.y());*/
-
-              //Mike mike2 = new Mike(world,event.x(),event.y());
-              //aa(event.x(),event.y());
-
-
-
               t.add(t1, new Trash(world, xMike2, yMike2-90));
-              //m.add(i,mike2)  ;
               layer.add(t.get(t1).layer());
-              //mike = m.get(i);
               t1++;
               t2++;
-             // System.out.println(xMike2 + "   " +yMike2);
-
-
-
-
           }
 
-      });
+      });*/
 
 
   }
@@ -278,7 +259,7 @@ public class GameScreen extends Screen {
     blueBin.update(delta);
     yellowBin.update(delta);
     greenBin.update(delta);
-
+    move();
 
 
       world.step(0.033f, 10, 10);
@@ -330,6 +311,86 @@ public class GameScreen extends Screen {
             world.drawDebugData();
         }
 
+    }
+    public void move(){
+        PlayN.keyboard().setListener(new Keyboard.Adapter(){
+            @Override
+            public void onKeyDown(Keyboard.Event event){
+                if (event.key() == Key.RIGHT) {
+                    Mike.action = 1;
+                    switch (Mike.state){
+                        case IDLE: if(Mike.action ==1){Mike.state = Mike.State.WALK;} break;
+                        //case WALK: state = State.THROW; break;
+                        case THROW: Mike.state = Mike.State.WALK; break;
+
+                    }
+                    //GameScreen.recivePosition(x_px,y_px);
+
+                }
+                else if (event.key() == Key.LEFT) {
+                    Mike.action = 1;
+                    switch (Mike.state){
+                        case IDLE: if(Mike.action ==1){Mike.state = Mike.State.BACK;} break;
+                        //case WALK: state = State.THROW; break;
+                        case THROW: Mike.state = Mike.State.WALK; break;
+                    }
+                    // GameScreen.recivePosition(x_px,y_px);
+                }
+                else if (event.key() == Key.ENTER) {
+                    switch (Mike.state){
+                        //case IDLE: state = State.WALK; break;
+                        case WALK: Mike.state = Mike.State.IDLE; break;
+                        case THROW: Mike.state = Mike.State.IDLE; break;
+                        //Gauge g = new Gauge(10f, 10f);
+                    }
+                }
+
+                else if (event.key() == Key.SPACE) {
+                    switch (Mike.state){
+                        case IDLE: Mike.state = Mike.State.THROW; break;
+                        case WALK: Mike.state = Mike.State.THROW; break;
+                        //case THROW: state = State.IDLE; break;
+
+
+                    }
+
+                    Gauge.power(-99);
+                    createTrash();
+
+                }
+
+
+            }
+
+
+            public void onKeyUp(Keyboard.Event event){
+                if (event.key() == Key.RIGHT) {
+                    Mike.action = 0;
+                    if(Mike.action ==0&& Mike.state == Mike.State.WALK){
+                        Mike.state = Mike.State.IDLE;
+                    }
+
+                }
+                if (event.key() == Key.LEFT) {
+                    Mike.action = 0;
+                    if(Mike.action ==0&& Mike.state == Mike.State.BACK){
+                        Mike.state = Mike.State.IDLE;
+                    }
+
+                }
+            }
+        });
+    }
+    public static void recivePosition(float xMike,float yMike){
+        xMike2 = xMike;
+        yMike2 = yMike;
+
+    }
+    public void createTrash(){
+        t.add(t1, new Trash(world, xMike2+50, yMike2-90));
+        layer.add(t.get(t1).layer());
+        t1++;
+        t2++;
     }
 
 }

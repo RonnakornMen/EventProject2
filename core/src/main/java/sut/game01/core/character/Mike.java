@@ -34,7 +34,7 @@ public class Mike   {
     private int spriteIndex = 0;
     private boolean hasLoaded = false;
     //private float x= 60;
-    private int action = 0;
+    public static int action = 0;
     private int a =0;
     Gauge gauge;
 
@@ -46,13 +46,13 @@ public class Mike   {
         IDLE, WALK, THROW, BACK
     };
 
-    private State state = State.IDLE;
+    public static State state = State.IDLE;
 
     private int e = 0;
     private int offset = 0;
 
     public Mike(final World world,final float x_px, final float y_px){
-        PlayN.keyboard().setListener(new Keyboard.Adapter(){
+       /* PlayN.keyboard().setListener(new Keyboard.Adapter(){
             @Override
             public void onKeyDown(Keyboard.Event event){
                 if (event.key() == Key.RIGHT) {
@@ -117,7 +117,7 @@ public class Mike   {
 
                 }
             }
-        });
+        });*/
 
         sprite = SpriteLoader.getSprite("images/mike2.json");
         sprite.addCallback(new Callback<Sprite>(){
