@@ -38,7 +38,8 @@ public class Mike   {
     private int a =0;
     Gauge gauge;
 
-
+    private  float diffY , diffX;
+    private double angle;
     private World world;
     private Body body;
     public enum State {
@@ -60,7 +61,10 @@ public class Mike   {
                         case IDLE: if(action ==1){state = State.WALK;} break;
                         //case WALK: state = State.THROW; break;
                         case THROW: state = State.WALK; break;
+
                     }
+                    //GameScreen.recivePosition(x_px,y_px);
+
                 }
                 else if (event.key() == Key.LEFT) {
                     action = 1;
@@ -69,6 +73,7 @@ public class Mike   {
                         //case WALK: state = State.THROW; break;
                         case THROW: state = State.WALK; break;
                     }
+                   // GameScreen.recivePosition(x_px,y_px);
                 }
                 else if (event.key() == Key.SPACE) {
                     switch (state){
@@ -89,10 +94,12 @@ public class Mike   {
 
                     Gauge.power(-99);
 
+
                 }
 
 
             }
+
 
             public void onKeyUp(Keyboard.Event event){
                 if (event.key() == Key.RIGHT) {
@@ -131,13 +138,27 @@ public class Mike   {
             }
 
         });
-		/*sprite.layer().addListener(new Pointer.Adapter(){
-			@Override
-			public void onPointerEnd(Pointer.Event event) {
-				state = State.ATTK;
-				spriteIndex =
-			}
-		});*/
+        PlayN.mouse().setListener(new Mouse.Adapter(){
+            @Override
+            public void onMouseMove(Mouse.MotionEvent event) {
+                layerAngleUpdate(event.x() , event.y());
+            }
+
+            private void layerAngleUpdate(float x1, float y1) {
+                diffY = Math.abs(x1 - x_px) ;
+                diffX = Math.abs(y1 - y_px);
+                angle = Math.toDegrees(Math.atan(diffY / diffX));
+                if (angle < 54f){
+                    angle = 54f;
+                }else if (angle > 84f){
+                    angle = 84f;
+                }
+                System.out.println("X :" + x1 + "   Y :" + y1 + "Degree " + angle);
+
+
+                // System.out.println(angle);
+            }
+        });
     }
     private Body initPhysicsBody(World world, float x, float y) {
         BodyDef bodyDef = new BodyDef();
@@ -163,6 +184,7 @@ public class Mike   {
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x, y), 0f);
+
         return body;
     }
     public Layer layer() {
@@ -219,8 +241,14 @@ public class Mike   {
         sprite.layer().setTranslation(
                 (body.getPosition().x / GameScreen.M_PER_PIXEL) +10,
                 body.getPosition().y / GameScreen.M_PER_PIXEL);
+        //sprite.layer().setRotation(( (float) angle / 30f) - 2.9f);
+        GameScreen.recivePosition(body.getPosition().x / GameScreen.M_PER_PIXEL + 10, body.getPosition().y / GameScreen.M_PER_PIXEL);
+    }
+    public String getInfo(){
+        return String.valueOf(layer().rotation());
 
     }
+
 
 
 }

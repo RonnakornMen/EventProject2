@@ -50,9 +50,7 @@ public class GameScreen extends Screen {
   private Image cloudImage;
   private float xC= 24.0f;
   private float yC = 100;
-  //private final ImageLayer blueBin;
-  //private final ImageLayer yellowBin;
- // private final ImageLayer greenBin;
+
   private final ImageLayer wall;
   private Mike mike;
   private Gauge gauge;
@@ -65,6 +63,8 @@ public class GameScreen extends Screen {
   private int b=0;
   private float yM = 395;
   private Root root;
+  static float xMike2;
+  static float yMike2;
     ArrayList<Trash> t =  new ArrayList<Trash>();
     int t1=0;
     int t2=0;
@@ -150,18 +150,8 @@ public class GameScreen extends Screen {
     cloud = graphics().createImageLayer(cloudImage);
     graphics().rootLayer().add(cloud);
     cloud.setTranslation(0, 105);
-    //===========================================================================bluebin
-    /*Image blueBinImage = assets().getImage("images/blueBin.png");
-    this.blueBin = graphics().createImageLayer(blueBinImage);
-    blueBin.setTranslation(360, 360);*/
-    //===========================================================================yellowbin
-    /*Image yellowBinImage = assets().getImage("images/yellowBin.png");
-    this.yellowBin = graphics().createImageLayer(yellowBinImage);
-    yellowBin.setTranslation(460, 360);*/
-    //===========================================================================greenbin
-    /*Image greenBinImage = assets().getImage("images/greenBin.png");
-    this.greenBin = graphics().createImageLayer(greenBinImage);
-    greenBin.setTranslation(560, 360);*/
+
+
     //===========================================================================wall
     Image wallImage = assets().getImage("images/wall.png");
     this.wall = graphics().createImageLayer(wallImage);
@@ -179,7 +169,11 @@ public class GameScreen extends Screen {
      world.setAutoClearForces(true);
 
   }
+    public static void recivePosition(float xMike,float yMike){
+        xMike2 = xMike;
+        yMike2 = yMike;
 
+    }
 
 
  //=============================================================
@@ -259,40 +253,16 @@ public class GameScreen extends Screen {
 
 
 
-              t.add(t1, new Trash(world, event.x(), event.y()));
+              t.add(t1, new Trash(world, xMike2, yMike2-90));
               //m.add(i,mike2)  ;
               layer.add(t.get(t1).layer());
               //mike = m.get(i);
               t1++;
               t2++;
+             // System.out.println(xMike2 + "   " +yMike2);
 
 
 
-               /* BodyDef bodyDef = new BodyDef();
-                bodyDef.type = BodyType.DYNAMIC;
-                bodyDef.position = new Vec2(event.x() * M_PER_PIXEL,
-                        event.y() * M_PER_PIXEL);//แปลง pixel ให้เป็น m คือ เอา pixel ไปคูณ กับค่าคงที่
-                Body body = world.createBody(bodyDef);
-                bodyDef.active = new Boolean(true);
-
-                //PolygonShape shape = new PolygonShape();
-               CircleShape shape = new CircleShape();
-
-
-                shape.setRadius(0.7f);
-
-
-                FixtureDef fixtureDef = new FixtureDef();//น้ำหนัก
-                fixtureDef.shape = shape;
-                fixtureDef.density = 0.4f;
-                fixtureDef.friction = 0.1f;
-                fixtureDef.restitution = 0.35f;
-
-                body.createFixture(fixtureDef);
-                body.setLinearDamping(0.2f);
-                //body.setTransform(new Vec2(x, y), 0f);
-                //return body;*/
-              //System.out.println(j);
 
           }
 
