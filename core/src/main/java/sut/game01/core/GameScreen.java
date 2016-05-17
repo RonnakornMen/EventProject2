@@ -15,6 +15,7 @@ import playn.core.ImageLayer;
 import playn.core.util.Clock;
 import sut.game01.core.bin.BlueBin;
 import sut.game01.core.bin.GreenBin;
+import sut.game01.core.trash.Trash;
 import sut.game01.core.bin.YellowBin;
 import tripleplay.game.Screen;
 import react.UnitSlot;
@@ -25,7 +26,11 @@ import tripleplay.ui.layout.AxisLayout;
 import static playn.core.PlayN.graphics;
 import sut.game01.core.character.Mike;
 import sut.game01.core.gauge.Gauge;
+import sut.game01.core.trash.Trash;
 
+
+
+import java.util.ArrayList;
 
 
 public class GameScreen extends Screen {
@@ -54,12 +59,15 @@ public class GameScreen extends Screen {
   private BlueBin blueBin;
   private GreenBin greenBin;
   private YellowBin yellowBin;
+  private Trash trash;
   private final ImageLayer mario;
-
+  static int numTrash = 0;
   private int b=0;
   private float yM = 395;
   private Root root;
-
+    ArrayList<Trash> t =  new ArrayList<Trash>();
+    int t1=0;
+    int t2=0;
     public static float M_PER_PIXEL = 1 / 26.666667f;
     private static int width = 24;
     private static int height = 18;
@@ -169,7 +177,11 @@ public class GameScreen extends Screen {
      world = new World(gravity);
      world.setWarmStarting(true);
      world.setAutoClearForces(true);
+
   }
+
+
+
  //=============================================================
   @Override
   public void wasShown (){
@@ -190,6 +202,9 @@ public class GameScreen extends Screen {
     this.layer.add(yellowBin.layer());
     greenBin = new GreenBin(world,560,480f);
     this.layer.add(greenBin.layer());
+     t.add(t1, new Trash(world, 350f, 480f));
+      layer.add(t.get(t1).layer());
+
     this.layer.add(wall);
     gauge = new Gauge(10f, 10f);
     this.layer.add(gauge.layer());
@@ -233,7 +248,55 @@ public class GameScreen extends Screen {
       EdgeShape groundShape4 = new EdgeShape();
       groundShape4.set(new Vec2(width, height), new Vec2(width, 0));
       ground4.createFixture(groundShape4, 0.0f);*/
+      mouse().setListener(new Mouse.Adapter() {
+          @Override
+          public void onMouseDown(Mouse.ButtonEvent event) {
+                /*System.out.println(event.x() + " and " +
+                        event.y());*/
 
+              //Mike mike2 = new Mike(world,event.x(),event.y());
+              //aa(event.x(),event.y());
+
+
+
+              t.add(t1, new Trash(world, event.x(), event.y()));
+              //m.add(i,mike2)  ;
+              layer.add(t.get(t1).layer());
+              //mike = m.get(i);
+              t1++;
+              t2++;
+
+
+
+               /* BodyDef bodyDef = new BodyDef();
+                bodyDef.type = BodyType.DYNAMIC;
+                bodyDef.position = new Vec2(event.x() * M_PER_PIXEL,
+                        event.y() * M_PER_PIXEL);//แปลง pixel ให้เป็น m คือ เอา pixel ไปคูณ กับค่าคงที่
+                Body body = world.createBody(bodyDef);
+                bodyDef.active = new Boolean(true);
+
+                //PolygonShape shape = new PolygonShape();
+               CircleShape shape = new CircleShape();
+
+
+                shape.setRadius(0.7f);
+
+
+                FixtureDef fixtureDef = new FixtureDef();//น้ำหนัก
+                fixtureDef.shape = shape;
+                fixtureDef.density = 0.4f;
+                fixtureDef.friction = 0.1f;
+                fixtureDef.restitution = 0.35f;
+
+                body.createFixture(fixtureDef);
+                body.setLinearDamping(0.2f);
+                //body.setTransform(new Vec2(x, y), 0f);
+                //return body;*/
+              //System.out.println(j);
+
+          }
+
+      });
 
 
   }
@@ -245,6 +308,9 @@ public class GameScreen extends Screen {
     blueBin.update(delta);
     yellowBin.update(delta);
     greenBin.update(delta);
+
+
+
       world.step(0.033f, 10, 10);
     //=========================================moveCloud
      xC += 0.5f * delta /8;
@@ -265,6 +331,14 @@ public class GameScreen extends Screen {
         b=0;
     }
     mario.setTranslation(360, yM);
+
+      for(int k=0;k<=t2;k++){
+          t.get(k).update(delta);
+          //System.out.println(j);
+      }
+
+
+
   }
 
     @Override
@@ -274,12 +348,18 @@ public class GameScreen extends Screen {
         blueBin.paint(clock);
         yellowBin.paint(clock);
         greenBin.paint(clock);
+
+        for(int k=0;k<=t2;k++)
+            t.get(k).paint(clock);
+
+
         if (showDebugDraw) {
             debugDraw.getCanvas().clear();
             debugDraw.getCanvas().setFillColor(Color.rgb(255,255,255));
            // debugDraw.getCanvas().drawText(debugString, 100,100);
             world.drawDebugData();
         }
+
     }
 
 }
