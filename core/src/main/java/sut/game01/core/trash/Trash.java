@@ -120,8 +120,8 @@ public class Trash {
         /*CircleShape shape = new CircleShape();
         shape.setRadius(0.7f);*/
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(56 * GameScreen.M_PER_PIXEL / 2,
-                sprite.layer().height() * GameScreen.M_PER_PIXEL / 2);
+        shape.setAsBox(30 * GameScreen.M_PER_PIXEL / 2,
+                /*sprite.layer().height()*/30 * GameScreen.M_PER_PIXEL / 2);
 
         FixtureDef fixtureDef = new FixtureDef();//น้ำหนัก
         fixtureDef.shape = shape;
