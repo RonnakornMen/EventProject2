@@ -9,6 +9,7 @@ import playn.core.ImageLayer;
 import playn.core.ImageLayer;
 import playn.core.Mouse;
 import playn.core.PlayN;
+import sut.game01.core.GameScreen;
 import tripleplay.game.Screen;
 import react.UnitSlot;
 import tripleplay.game.UIScreen;
@@ -27,7 +28,7 @@ public class Gauge   {
     private int spriteIndex = 0;
     private boolean hasLoaded = false;
     static int num;
-
+    static int num2;
 
     public enum State {
         IDLE
@@ -89,9 +90,12 @@ public class Gauge   {
             
             }*/
             if(num==-99){
-                System.out.println(spriteIndex);
+               // System.out.println(spriteIndex);
+                num2 = spriteIndex;
                 spriteIndex =0;
                 num=0;
+                //System.out.println(num2);
+                GameScreen.powerMethod(num2);
             }
 
             spriteIndex = offset + ((spriteIndex +1 ) %11);

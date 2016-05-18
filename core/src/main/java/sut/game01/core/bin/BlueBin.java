@@ -126,8 +126,8 @@ public class BlueBin {
 
         FixtureDef fixtureDef = new FixtureDef();//น้ำหนัก
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.4f;
-        fixtureDef.friction = 0.1f;
+        fixtureDef.density = 0.8f;
+        fixtureDef.friction = 0.2f;
         fixtureDef.restitution = 0.35f;
 
         body.createFixture(fixtureDef);

@@ -153,7 +153,7 @@ public class Mike   {
                 }else if (angle > 84f){
                     angle = 84f;
                 }
-                System.out.println("X :" + x1 + "   Y :" + y1 + "Degree " + angle);
+                //System.out.println("X :" + x1 + "   Y :" + y1 + "Degree " + angle);
 
 
                 // System.out.println(angle);
@@ -180,7 +180,7 @@ public class Mike   {
         fixtureDef.density = 0.4f;
         fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0.35f;
-
+        body.setFixedRotation(true);
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x, y), 0f);
@@ -249,6 +249,7 @@ public class Mike   {
 
     }
 
-
-
+    public Body getBody() {
+        return body;
+    }
 }
