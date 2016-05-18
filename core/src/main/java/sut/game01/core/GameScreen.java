@@ -7,6 +7,7 @@ import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -85,6 +86,7 @@ public class GameScreen extends Screen {
     ArrayList<BottleGlass> bottleGlass = new ArrayList<BottleGlass>();
     int bottleGlassNum=0;
     public static HashMap<Object, String> bodies = new HashMap<Object, String>();
+    public static HashMap<String, Body> bodiesGround = new HashMap<String, Body>();
     private String debugString = String.valueOf(bodies);
 
     public static float M_PER_PIXEL = 1 / 26.666667f;
@@ -93,7 +95,7 @@ public class GameScreen extends Screen {
     private float power3;
 
     private World world;
-    private boolean showDebugDraw = true;
+    private boolean showDebugDraw = false;
     private DebugDrawBox2D debugDraw;
 
 
@@ -199,7 +201,8 @@ public class GameScreen extends Screen {
         world = new World(gravity);
         world.setWarmStarting(true);
         world.setAutoClearForces(true);
-
+        mike = new Mike(world, 100f, 480f);
+        gauge = new Gauge(10f, 10f);
     }
 
 
@@ -219,8 +222,8 @@ public class GameScreen extends Screen {
         this.layer.add(blueBin);
         this.layer.add(yellowBin);
         this.layer.add(greenBin);
-
-        mike = new Mike(world, 100f, 480f);
+        mike.getBody().setTransform(new Vec2(100f*M_PER_PIXEL,480f*M_PER_PIXEL),0);
+        //mike = new Mike(world, 100f, 480f);
         this.layer.add(mike.layer());
         bodies.put(mike, "mike");
         this.layer.add(cloud);
@@ -244,7 +247,7 @@ public class GameScreen extends Screen {
 
 
         this.layer.add(wall);
-        gauge = new Gauge(10f, 10f);
+        //gauge = new Gauge(10f, 10f);
         this.layer.add(gauge.layer());
 
         if (showDebugDraw) {
@@ -271,6 +274,7 @@ public class GameScreen extends Screen {
         EdgeShape groundShape = new EdgeShape();
         groundShape.set(new Vec2(0, height), new Vec2(width, height));
         ground.createFixture(groundShape, 0.0f);
+        bodiesGround.put("ground", ground);
 
         Body ground2 = world.createBody(new BodyDef());
         EdgeShape groundShape2 = new EdgeShape();
@@ -308,6 +312,14 @@ public class GameScreen extends Screen {
         bluebinShapeWallRight.set(new Vec2(438f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(438f*M_PER_PIXEL, 395f*M_PER_PIXEL));
         bluebinWallRight.createFixture(bluebinShapeWallRight, 0.0f);
 
+        Body blueBincheck = world.createBody(new BodyDef());
+        final CircleShape shape = new CircleShape();
+        shape.setRadius(0.3f);
+        shape.m_p.set(410f*M_PER_PIXEL,460f*M_PER_PIXEL);
+        /*EdgeShape coinShape = new EdgeShape();
+        groundShape.set(new Vec2(0, height), new Vec2(width, height));*/
+        blueBincheck.createFixture(shape, 0.0f);
+
         //===========================================================static yellowbin
         Body yellowWallLeft = world.createBody(new BodyDef());
         EdgeShape yellowShapeWallLeft = new EdgeShape();
@@ -319,6 +331,13 @@ public class GameScreen extends Screen {
         yellowShapeWallRight.set(new Vec2(538f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(538f*M_PER_PIXEL, 395f*M_PER_PIXEL));
         yellowWallRight.createFixture(yellowShapeWallRight, 0.0f);
 
+        Body yellowBincheck = world.createBody(new BodyDef());
+        final CircleShape shape2 = new CircleShape();
+        shape2.setRadius(0.3f);
+        shape2.m_p.set(510f*M_PER_PIXEL,460f*M_PER_PIXEL);
+        /*EdgeShape coinShape = new EdgeShape();
+        groundShape.set(new Vec2(0, height), new Vec2(width, height));*/
+        yellowBincheck.createFixture(shape2, 0.0f);
         //===========================================================static greenbin
         Body greenbinWallLeft = world.createBody(new BodyDef());
         EdgeShape greenbinShapeWallLeft = new EdgeShape();
@@ -330,6 +349,13 @@ public class GameScreen extends Screen {
         greenbinShapeWallRight.set(new Vec2(638f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(638f*M_PER_PIXEL, 395f*M_PER_PIXEL));
         greenbinWallRight.createFixture(greenbinShapeWallRight, 0.0f);
 
+        Body greenBincheck = world.createBody(new BodyDef());
+        final CircleShape shape3 = new CircleShape();
+        shape3.setRadius(0.3f);
+        shape3.m_p.set(610f*M_PER_PIXEL,460f*M_PER_PIXEL);
+        /*EdgeShape coinShape = new EdgeShape();
+        groundShape.set(new Vec2(0, height), new Vec2(width, height));*/
+        greenBincheck.createFixture(shape3, 0.0f);
 
       /*Body ground4 = world.createBody(new BodyDef());
       EdgeShape groundShape4 = new EdgeShape();
@@ -483,6 +509,7 @@ public class GameScreen extends Screen {
                     Gauge.power(-99);
                     Random rand = new Random();
                     int nRand = rand.nextInt(3) +1;
+
                     if(nRand ==1)
                         createTrash(t1);
                     else if(nRand ==2)
@@ -524,7 +551,7 @@ public class GameScreen extends Screen {
 
     public void createTrash(int trashTotal) {
         this.t1 = trashTotal;
-        t.add(t1, new Trash(world, xMike2 + 30, yMike2 - 40));
+        t.add(t1, new Trash(world, xMike2 + 25, yMike2 - 30));
         bodies.put(t, "Trash" + t1);
         layer.add(t.get(t1).layer());
         t.get(t1).hasThrow(1);
@@ -536,7 +563,7 @@ public class GameScreen extends Screen {
     public void createCan(int canNum2){
         this.canNum = canNum2;
         can.add(canNum, new Can(world, xMike2 + 30, yMike2 - 70));
-        bodies.put(can, "Trash " + canNum);
+        bodies.put(can, "Can " + canNum);
         layer.add(can.get(canNum).layer());
         can.get(canNum).hasThrow(1);
         canNum++;
@@ -562,9 +589,24 @@ public class GameScreen extends Screen {
                 if ((contact.getFixtureA().getBody() ==  mike.getBody())) /*|| bodies.get(b) == "mike") || (bodies.get(b).charAt(0) == 'T' && bodies.get(a) == "mike")*/ {
                     //System.out.println(power);
                     b.applyForce(new Vec2(power, -150f), b.getPosition());
+                    for(Body b1:bodiesGround.values()){
+                        if(b1 == b)
+                            System.out.println("contact ground");
+                    }
                     //b.applyLinearImpulse(new Vec2(power, -0), b.getPosition());
 
                 }
+                if ((contact.getFixtureB().getBody() ==  mike.getBody())) /*|| bodies.get(b) == "mike") || (bodies.get(b).charAt(0) == 'T' && bodies.get(a) == "mike")*/ {
+                    //System.out.println(power);
+                    a.applyForce(new Vec2(power, -150f), b.getPosition());
+                    for(Body b1:bodiesGround.values()){
+                        if(b1 == a)
+                            System.out.println("contact ground");
+                    }
+                    //b.applyLinearImpulse(new Vec2(power, -0), b.getPosition());
+
+                }
+
 
             }
 
