@@ -138,4 +138,8 @@ public class Trash {
     public static void hasThrow(int hasThrownum0){
         hasThrownum = hasThrownum0;
     }
+
+    public Body getBody() {
+        return body;
+    }
 }

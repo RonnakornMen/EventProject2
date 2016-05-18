@@ -87,6 +87,9 @@ public class GameScreen extends Screen {
     int bottleGlassNum=0;
     public static HashMap<Object, String> bodies = new HashMap<Object, String>();
     public static HashMap<String, Body> bodiesGround = new HashMap<String, Body>();
+    /*public static HashMap<String, Body> bodiesBluebin = new HashMap<String, Body>();
+    public static HashMap<String, Body> bodiesYellowbin = new HashMap<String, Body>();
+    public static HashMap<String, Body> bodiesGreenbin = new HashMap<String, Body>();*/
     private String debugString = String.valueOf(bodies);
 
     public static float M_PER_PIXEL = 1 / 26.666667f;
@@ -222,6 +225,8 @@ public class GameScreen extends Screen {
         this.layer.add(blueBin);
         this.layer.add(yellowBin);
         this.layer.add(greenBin);
+
+
         mike.getBody().setTransform(new Vec2(100f*M_PER_PIXEL,480f*M_PER_PIXEL),0);
         //mike = new Mike(world, 100f, 480f);
         this.layer.add(mike.layer());
@@ -275,6 +280,7 @@ public class GameScreen extends Screen {
         groundShape.set(new Vec2(0, height), new Vec2(width, height));
         ground.createFixture(groundShape, 0.0f);
         bodiesGround.put("ground", ground);
+        bodies.put(ground,"ground2");
 
         Body ground2 = world.createBody(new BodyDef());
         EdgeShape groundShape2 = new EdgeShape();
@@ -319,6 +325,8 @@ public class GameScreen extends Screen {
         /*EdgeShape coinShape = new EdgeShape();
         groundShape.set(new Vec2(0, height), new Vec2(width, height));*/
         blueBincheck.createFixture(shape, 0.0f);
+       bodies.put(blueBincheck, "blueBin");
+        //bodiesGround.put("blueBin", blueBincheck);
 
         //===========================================================static yellowbin
         Body yellowWallLeft = world.createBody(new BodyDef());
@@ -338,6 +346,8 @@ public class GameScreen extends Screen {
         /*EdgeShape coinShape = new EdgeShape();
         groundShape.set(new Vec2(0, height), new Vec2(width, height));*/
         yellowBincheck.createFixture(shape2, 0.0f);
+        bodies.put(yellowBincheck, "yellowBin");
+        //bodiesGround.put("yellowBin", yellowBincheck);
         //===========================================================static greenbin
         Body greenbinWallLeft = world.createBody(new BodyDef());
         EdgeShape greenbinShapeWallLeft = new EdgeShape();
@@ -356,6 +366,8 @@ public class GameScreen extends Screen {
         /*EdgeShape coinShape = new EdgeShape();
         groundShape.set(new Vec2(0, height), new Vec2(width, height));*/
         greenBincheck.createFixture(shape3, 0.0f);
+        bodies.put(greenBincheck, "greenBin");
+       // bodiesGround.put("greenBin", greenBincheck);
 
       /*Body ground4 = world.createBody(new BodyDef());
       EdgeShape groundShape4 = new EdgeShape();
@@ -509,7 +521,7 @@ public class GameScreen extends Screen {
                     Gauge.power(-99);
                     Random rand = new Random();
                     int nRand = rand.nextInt(3) +1;
-
+                    //nRand =1;
                     if(nRand ==1)
                         createTrash(t1);
                     else if(nRand ==2)
@@ -571,7 +583,7 @@ public class GameScreen extends Screen {
     public void createBottleGlass(int bottleGlassNum2){
         this.bottleGlassNum = bottleGlassNum2;
         bottleGlass.add(bottleGlassNum, new BottleGlass(world, xMike2 + 30, yMike2 - 70));
-        bodies.put(bottleGlass, "Trash " + bottleGlassNum);
+        bodies.put(bottleGlass, "BottleGlass " + bottleGlassNum);
         layer.add(bottleGlass.get(bottleGlassNum).layer());
         bottleGlass.get(bottleGlassNum).hasThrow(1);
         bottleGlassNum++;
@@ -584,9 +596,9 @@ public class GameScreen extends Screen {
                 //System.out.println("p in contact  " +power3 );
                 Body a = contact.getFixtureA().getBody();
                 Body b = contact.getFixtureB().getBody();
-                //System.out.println(bodies.get(mike));
-                //System.out.println(bodies.get(b));
-                if ((contact.getFixtureA().getBody() ==  mike.getBody())) /*|| bodies.get(b) == "mike") || (bodies.get(b).charAt(0) == 'T' && bodies.get(a) == "mike")*/ {
+               // System.out.println("a =" +bodies.get(a));
+               // System.out.println("b = "+bodies.get(b));
+                if ((contact.getFixtureA().getBody() ==  mike.getBody()))  {
                     //System.out.println(power);
                     b.applyForce(new Vec2(power, -150f), b.getPosition());
                     for(Body b1:bodiesGround.values()){
@@ -596,7 +608,7 @@ public class GameScreen extends Screen {
                     //b.applyLinearImpulse(new Vec2(power, -0), b.getPosition());
 
                 }
-                if ((contact.getFixtureB().getBody() ==  mike.getBody())) /*|| bodies.get(b) == "mike") || (bodies.get(b).charAt(0) == 'T' && bodies.get(a) == "mike")*/ {
+                if ((contact.getFixtureB().getBody() ==  mike.getBody())) {
                     //System.out.println(power);
                     a.applyForce(new Vec2(power, -150f), b.getPosition());
                     for(Body b1:bodiesGround.values()){
@@ -606,7 +618,69 @@ public class GameScreen extends Screen {
                     //b.applyLinearImpulse(new Vec2(power, -0), b.getPosition());
 
                 }
+               for (Trash trash: t) {
+                    if ((contact.getFixtureA().getBody() == trash.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == trash.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == trash.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == trash.getBody() && "ground2" == bodies.get(b))) {
+                    //System.out.println("a");
+                       a.setActive(false);
+                        trash.layer().setVisible(false);
 
+
+                        //wood.destroy();
+                    }
+                    if ((contact.getFixtureB().getBody() == trash.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == trash.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == trash.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == trash.getBody() && "ground2" == bodies.get(a))) {
+                        //System.out.println("b");
+                        b.setActive(false);
+                        trash.layer().setVisible(false);
+                    }
+                }
+                for (Can can2: can) {
+                    if ((contact.getFixtureA().getBody() == can2.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == can2.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == can2.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == can2.getBody() && "ground2" == bodies.get(b))) {
+                        //System.out.println("a");
+                        a.setActive(false);
+                        can2.layer().setVisible(false);
+
+
+                        //wood.destroy();
+                    }
+                    if ((contact.getFixtureB().getBody() == can2.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == can2.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == can2.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == can2.getBody() && "ground2" == bodies.get(a))) {
+                        //System.out.println("b");
+                        b.setActive(false);
+                        can2.layer().setVisible(false);
+                    }
+                }
+                for (BottleGlass bottleGlass2: bottleGlass) {
+                    if ((contact.getFixtureA().getBody() == bottleGlass2.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "ground2" == bodies.get(b))) {
+                        //System.out.println("a");
+                        a.setActive(false);
+                        bottleGlass2.layer().setVisible(false);
+
+
+                        //wood.destroy();
+                    }
+                    if ((contact.getFixtureB().getBody() == bottleGlass2.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "ground2" == bodies.get(a))) {
+                        //System.out.println("b");
+                        b.setActive(false);
+                        bottleGlass2.layer().setVisible(false);
+                    }
+                }
 
             }
 
@@ -652,6 +726,11 @@ public class GameScreen extends Screen {
             power = 550;
 
        //System.out.println("p" +power );
+    }
+    public void setOrderOfLayer(Layer layer, int order) {
+        // Process the reordering of layer by removing it, then adding it at the expecting order index
+        //jMap.getLayers().remove(layer);
+        //jMap.getLayers().add(order,  layer);
     }
 
 
