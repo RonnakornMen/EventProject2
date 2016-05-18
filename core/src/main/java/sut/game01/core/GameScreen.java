@@ -55,6 +55,9 @@ public class GameScreen extends Screen {
     private final ImageLayer overButton;
     private final ImageLayer endButton;
     private final ImageLayer cloud;
+    private final ImageLayer blueBin;
+    private final ImageLayer yellowBin;
+    private final ImageLayer greenBin;
     private Image bgImage;
     private Image cloudImage;
     private float xC = 24.0f;
@@ -63,9 +66,9 @@ public class GameScreen extends Screen {
     private final ImageLayer wall;
     private Mike mike;
     private Gauge gauge;
-    private BlueBin blueBin;
+    /*private BlueBin blueBin;
     private GreenBin greenBin;
-    private YellowBin yellowBin;
+    private YellowBin yellowBin;*/
     private Trash trash;
     private final ImageLayer mario;
     static int numTrash = 0;
@@ -90,7 +93,7 @@ public class GameScreen extends Screen {
     private float power3;
 
     private World world;
-    private boolean showDebugDraw = false;
+    private boolean showDebugDraw = true;
     private DebugDrawBox2D debugDraw;
 
 
@@ -172,6 +175,20 @@ public class GameScreen extends Screen {
         this.wall = graphics().createImageLayer(wallImage);
         wall.setTranslation(280, 330);
 
+        //===========================================================================bluebin
+        Image blueBinImage = assets().getImage("images/bin/blueBin.png");
+        this.blueBin = graphics().createImageLayer(blueBinImage);
+        blueBin.setTranslation(380, 395);
+        //===========================================================================yellowbin
+        Image yellowBinImage = assets().getImage("images/bin/yellowBin.png");
+        this.yellowBin = graphics().createImageLayer(yellowBinImage);
+        yellowBin.setTranslation(480, 395);
+        //===========================================================================greenbin
+        Image greenBinImage = assets().getImage("images/bin/greenBin.png");
+        this.greenBin = graphics().createImageLayer(greenBinImage);
+        greenBin.setTranslation(580, 395);
+
+
         //==================================================================mario
         Image marioImage = assets().getImage("images/mario.png");
         this.mario = graphics().createImageLayer(marioImage);
@@ -199,20 +216,24 @@ public class GameScreen extends Screen {
         this.layer.add(endButton);
 
 
+        this.layer.add(blueBin);
+        this.layer.add(yellowBin);
+        this.layer.add(greenBin);
+
         mike = new Mike(world, 100f, 480f);
         this.layer.add(mike.layer());
         bodies.put(mike, "mike");
         this.layer.add(cloud);
 
 
-        blueBin = new BlueBin(world, 360, 480f);
+        /*blueBin = new BlueBin(world, 400f, 480f);
         this.layer.add(blueBin.layer());
-        yellowBin = new YellowBin(world, 460f, 480f);
+        yellowBin = new YellowBin(world, 500f, 480f);
         this.layer.add(yellowBin.layer());
-        greenBin = new GreenBin(world, 560, 480f);
-        this.layer.add(greenBin.layer());
+        greenBin = new GreenBin(world, 600f, 480f);
+        this.layer.add(greenBin.layer());*/
 
-        
+
         t.add(t1, new Trash(world, -100f, 480f));
         layer.add(t.get(t1).layer());
         can.add(canNum, new Can(world, -100f, 480f));
@@ -276,6 +297,39 @@ public class GameScreen extends Screen {
         EdgeShape groundShapeWall3 = new EdgeShape();
         groundShapeWall3.set(new Vec2(293f*M_PER_PIXEL, 336f*M_PER_PIXEL), new Vec2(313f*M_PER_PIXEL, 480f*M_PER_PIXEL));
         groundWall3.createFixture(groundShapeWall3, 0.0f);
+        //===========================================================static bluebin
+        Body bluebinWallLeft = world.createBody(new BodyDef());
+        EdgeShape bluebinShapeWallLeft = new EdgeShape();
+        bluebinShapeWallLeft.set(new Vec2(382f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(382f*M_PER_PIXEL, 395f*M_PER_PIXEL));
+        bluebinWallLeft.createFixture(bluebinShapeWallLeft, 0.0f);
+
+        Body bluebinWallRight = world.createBody(new BodyDef());
+        EdgeShape bluebinShapeWallRight = new EdgeShape();
+        bluebinShapeWallRight.set(new Vec2(438f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(438f*M_PER_PIXEL, 395f*M_PER_PIXEL));
+        bluebinWallRight.createFixture(bluebinShapeWallRight, 0.0f);
+
+        //===========================================================static yellowbin
+        Body yellowWallLeft = world.createBody(new BodyDef());
+        EdgeShape yellowShapeWallLeft = new EdgeShape();
+        yellowShapeWallLeft.set(new Vec2(482f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(482f*M_PER_PIXEL, 395f*M_PER_PIXEL));
+        yellowWallLeft.createFixture(yellowShapeWallLeft, 0.0f);
+
+        Body yellowWallRight = world.createBody(new BodyDef());
+        EdgeShape yellowShapeWallRight = new EdgeShape();
+        yellowShapeWallRight.set(new Vec2(538f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(538f*M_PER_PIXEL, 395f*M_PER_PIXEL));
+        yellowWallRight.createFixture(yellowShapeWallRight, 0.0f);
+
+        //===========================================================static greenbin
+        Body greenbinWallLeft = world.createBody(new BodyDef());
+        EdgeShape greenbinShapeWallLeft = new EdgeShape();
+        greenbinShapeWallLeft.set(new Vec2(582f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(582f*M_PER_PIXEL, 395f*M_PER_PIXEL));
+        greenbinWallLeft.createFixture(greenbinShapeWallLeft, 0.0f);
+
+        Body greenbinWallRight = world.createBody(new BodyDef());
+        EdgeShape greenbinShapeWallRight = new EdgeShape();
+        greenbinShapeWallRight.set(new Vec2(638f*M_PER_PIXEL, 480f*M_PER_PIXEL), new Vec2(638f*M_PER_PIXEL, 395f*M_PER_PIXEL));
+        greenbinWallRight.createFixture(greenbinShapeWallRight, 0.0f);
+
 
       /*Body ground4 = world.createBody(new BodyDef());
       EdgeShape groundShape4 = new EdgeShape();
@@ -293,6 +347,7 @@ public class GameScreen extends Screen {
       });*/
      throwTrash();
 
+
     }
 
     @Override
@@ -300,9 +355,9 @@ public class GameScreen extends Screen {
         super.update(delta);
         mike.update(delta);
         gauge.update(delta);
-        blueBin.update(delta);
+        /*blueBin.update(delta);
         yellowBin.update(delta);
-        greenBin.update(delta);
+        greenBin.update(delta);*/
         move();
 
 
@@ -344,9 +399,9 @@ public class GameScreen extends Screen {
     public void paint(Clock clock) {
         super.paint(clock);
         mike.paint(clock);
-        blueBin.paint(clock);
+       /* blueBin.paint(clock);
         yellowBin.paint(clock);
-        greenBin.paint(clock);
+        greenBin.paint(clock);*/
 
         for (int k = 0; k <= t1; k++)
             t.get(k).paint(clock);
