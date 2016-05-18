@@ -1,4 +1,4 @@
-package sut.game01.core.bin;
+package sut.game01.core.trash;
 
 import static playn.core.PlayN.*;
 
@@ -29,7 +29,7 @@ import playn.core.util.*;
 import sut.game01.core.HomeScreen.*;
 
 
-public class GreenBin {
+public class BottleGlass {
     private Sprite sprite;
     private int spriteIndex = 0;
     private boolean hasLoaded = false;
@@ -38,7 +38,7 @@ public class GreenBin {
     private int a = 0;
     private World world;
     private Body body;
-
+    static int hasThrownum =0;
     public enum State {
         IDLE
     }
@@ -51,9 +51,9 @@ public class GreenBin {
     private int offset = 0;
 
 
-    public GreenBin(final World world,final float x_px, final float y_px) {
+    public BottleGlass(final World world,final float x_px, final float y_px) {
 
-        sprite = SpriteLoader.getSprite("images/bin/greenBin.json");
+        sprite = SpriteLoader.getSprite("images/trash/bottleGlass.json");
         sprite.addCallback(new Callback<Sprite>() {
             @Override
             public void onSuccess(Sprite result) {
@@ -73,6 +73,7 @@ public class GreenBin {
             }
 
         });
+
 
     }
 
@@ -96,8 +97,6 @@ public class GreenBin {
             sprite.setSprite(spriteIndex);
             e = 0;
         }
-        //sprite.layer().setTranslation(60 , 400);
-        // body.applyForce(new Vec2(move, jump),body.getPosition());
 
     }
 
@@ -126,13 +125,17 @@ public class GreenBin {
 
         FixtureDef fixtureDef = new FixtureDef();//น้ำหนัก
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.8f;
-        fixtureDef.friction = 0.2f;
+        fixtureDef.density = 0.4f;
+        fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0.35f;
 
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x, y), 0f);
+
         return body;
+    }
+    public static void hasThrow(int hasThrownum0){
+        hasThrownum = hasThrownum0;
     }
 }

@@ -38,7 +38,8 @@ public class Trash {
     private int a = 0;
     private World world;
     private Body body;
-
+    static int hasThrownum =0;
+    static int trashTypeNum = 1;
     public enum State {
         IDLE
     }
@@ -52,8 +53,7 @@ public class Trash {
 
 
     public Trash(final World world,final float x_px, final float y_px) {
-
-        sprite = SpriteLoader.getSprite("images/trash/trash.json");
+            sprite = SpriteLoader.getSprite("images/trash/trash.json");
         sprite.addCallback(new Callback<Sprite>() {
             @Override
             public void onSuccess(Sprite result) {
@@ -97,7 +97,6 @@ public class Trash {
             sprite.setSprite(spriteIndex);
             e = 0;
         }
-        //body.applyForce(new Vec2(10f, 0),body.getPosition());
 
     }
 
@@ -133,6 +132,10 @@ public class Trash {
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x, y), 0f);
+
         return body;
+    }
+    public static void hasThrow(int hasThrownum0){
+        hasThrownum = hasThrownum0;
     }
 }
