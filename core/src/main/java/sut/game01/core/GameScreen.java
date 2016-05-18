@@ -90,7 +90,7 @@ public class GameScreen extends Screen {
     private float power3;
 
     private World world;
-    private boolean showDebugDraw = true;
+    private boolean showDebugDraw = false;
     private DebugDrawBox2D debugDraw;
 
 
@@ -212,7 +212,7 @@ public class GameScreen extends Screen {
         greenBin = new GreenBin(world, 560, 480f);
         this.layer.add(greenBin.layer());
 
-
+        
         t.add(t1, new Trash(world, -100f, 480f));
         layer.add(t.get(t1).layer());
         can.add(canNum, new Can(world, -100f, 480f));
@@ -469,7 +469,7 @@ public class GameScreen extends Screen {
 
     public void createTrash(int trashTotal) {
         this.t1 = trashTotal;
-        t.add(t1, new Trash(world, xMike2 + 30, yMike2 - 70));
+        t.add(t1, new Trash(world, xMike2 + 30, yMike2 - 40));
         bodies.put(t, "Trash" + t1);
         layer.add(t.get(t1).layer());
         t.get(t1).hasThrow(1);
@@ -506,7 +506,8 @@ public class GameScreen extends Screen {
                 //System.out.println(bodies.get(b));
                 if ((contact.getFixtureA().getBody() ==  mike.getBody())) /*|| bodies.get(b) == "mike") || (bodies.get(b).charAt(0) == 'T' && bodies.get(a) == "mike")*/ {
                     //System.out.println(power);
-                    b.applyForce(new Vec2(power, -300f), b.getPosition());
+                    b.applyForce(new Vec2(power, -150f), b.getPosition());
+                    //b.applyLinearImpulse(new Vec2(power, -0), b.getPosition());
 
                 }
 
