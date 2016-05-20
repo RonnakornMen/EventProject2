@@ -3,6 +3,7 @@ package sut.game01.core;
 
 import static playn.core.PlayN.*;
 
+import javafx.event.ActionEvent;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.DebugDraw;
@@ -20,9 +21,7 @@ import java.lang.IndexOutOfBoundsException;
 import playn.core.util.Clock;
 import sut.game01.core.bin.BlueBin;
 import sut.game01.core.bin.GreenBin;
-import sut.game01.core.trash.BottleGlass;
-import sut.game01.core.trash.Can;
-import sut.game01.core.trash.Trash;
+import sut.game01.core.trash.*;
 import sut.game01.core.bin.YellowBin;
 import tripleplay.game.Screen;
 import react.UnitSlot;
@@ -30,8 +29,9 @@ import tripleplay.game.UIScreen;
 import tripleplay.game.ScreenStack;
 import tripleplay.ui.*;
 import tripleplay.ui.layout.AxisLayout;
-
+import javax.swing.Timer;
 import java.lang.String;
+import java.awt.event.ActionListener;
 
 import static playn.core.PlayN.graphics;
 
@@ -83,14 +83,17 @@ public class GameScreen extends Screen {
     ArrayList<Trash> tRemove =new ArrayList<Trash>();
     ArrayList<Can> canRemove =new ArrayList<Can>();
     ArrayList<BottleGlass> bottleGlassRemove =new ArrayList<BottleGlass>();
+    ArrayList<PlasticBottle> plasticBottleRemove =new ArrayList<PlasticBottle>();
     ArrayList<Trash> t = new ArrayList<Trash>();
     int t1 = 0;
     ArrayList<Can> can = new ArrayList<Can>();
     int canNum = 0;
     ArrayList<BottleGlass> bottleGlass = new ArrayList<BottleGlass>();
     int bottleGlassNum = 0;
+    ArrayList<PlasticBottle> plasticBottle = new ArrayList<PlasticBottle>();
+    int plasticBottleNum =0;
     int trashNum = 0;
-    int canNum2 = 0;
+    int timeI = 0;
     int bottleGlass3 = 0;
 
     private boolean destroy = false;
@@ -107,8 +110,11 @@ public class GameScreen extends Screen {
     public static HashMap<String, Body> bodiesYellowbin = new HashMap<String, Body>();
     public static HashMap<String, Body> bodiesGreenbin = new HashMap<String, Body>();*/
     private String debugString = String.valueOf(bodies);
-    
-
+    private String strScore;
+    private String strTime;
+    int score =0;
+    int time =0;
+    int targetScore =100;
 
     public static float M_PER_PIXEL = 1 / 26.666667f;
     private static int width = 24;
@@ -123,6 +129,8 @@ public class GameScreen extends Screen {
     Random rand = new Random();
     int nRand = rand.nextInt(3) + 1;
 
+
+
     public GameScreen(final ScreenStack ss) {
         this.ss = ss;
         this.settingScreen = new SettingScreen(ss);
@@ -130,10 +138,13 @@ public class GameScreen extends Screen {
         this.endScreen = new EndScreen(ss);
 
 
+
+
         if (nRand == 1)
             nextString = "Paper";
         else if (nRand == 2)
-            nextString = "Can";
+            //nextString = "Can";
+             nextString = "Plastic Bottle";
         else if (nRand == 3)
             nextString = "Glass Bottle";
         debugString = "Next is " + nextString;
@@ -278,6 +289,8 @@ public class GameScreen extends Screen {
         layer.add(can.get(canNum).layer());
         bottleGlass.add(bottleGlassNum, new BottleGlass(world, -100f, 480f));
         layer.add(bottleGlass.get(bottleGlassNum).layer());
+        plasticBottle.add(plasticBottleNum, new PlasticBottle(world, -100f, 480f));
+        layer.add(plasticBottle.get(plasticBottleNum).layer());
 
 
         this.layer.add(wall);
@@ -418,6 +431,7 @@ public class GameScreen extends Screen {
 
     }
 
+
     @Override
     public void update(int delta) {
         super.update(delta);
@@ -428,9 +442,15 @@ public class GameScreen extends Screen {
         greenBin.update(delta);*/
         move();
 
+        strScore = "Score = "+score+"/"+targetScore;
+        time = 60;
+        strTime = "Time =" + (time - (timeI/40));
+        timeI++;
+
 
         world.step(0.033f, 10, 10);
         //=========================================moveCloud
+
         xC += 0.5f * delta / 8;
         if (xC > bgImage.width() + cloudImage.width()) {
             xC = -cloudImage.width();
@@ -458,6 +478,9 @@ public class GameScreen extends Screen {
 
         for (int k3 = 0; k3 <= bottleGlassNum; k3++) {
             bottleGlass.get(k3).update(delta);
+        }
+        for (int k4 = 0; k4 <= plasticBottleNum; k4++) {
+            plasticBottle.get(k4).update(delta);
         }
        /* if(destroy == true){
             // t.get(t1).layer().destroy();
@@ -495,10 +518,369 @@ public class GameScreen extends Screen {
                 }
 
 
-                //b.applyLinearImpulse(new Vec2(power, -0), b.getPosition());
 
 
-                /*for (int h = 0; h <= t1; h++) {
+               for (Trash trash: t) {
+                    if ((contact.getFixtureA().getBody() == trash.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == trash.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == trash.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == trash.getBody() && "ground2" == bodies.get(b))) {
+
+                      // a.setActive(false);
+                        //trash.layer().setVisible(false);
+                        if("ground2" != bodies.get(b))
+                            score +=10;
+                        trash.layer().destroy();
+                        tRemove.add(trash);
+
+
+                    }
+                    if ((contact.getFixtureB().getBody() == trash.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == trash.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == trash.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == trash.getBody() && "ground2" == bodies.get(a))) {
+                        //System.out.println("b");
+                        if("ground2" != bodies.get(a))
+                            score +=10;
+                        trash.layer().destroy();
+                        //world.destroyBody(trash.getBody());
+                        tRemove.add(trash);
+
+                    }
+                   //System.out.println("trash = " + trashNum);
+                   trashNum++;
+                }
+                for (Can can2: can) {
+                    if ((contact.getFixtureA().getBody() == can2.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == can2.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == can2.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == can2.getBody() && "ground2" == bodies.get(b))) {
+                        if("ground2" != bodies.get(b))
+                            score +=10;
+                       can2.layer().destroy();
+                       canRemove.add(can2);
+
+                    }
+                    if ((contact.getFixtureB().getBody() == can2.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == can2.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == can2.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == can2.getBody() && "ground2" == bodies.get(a))) {
+                        if("ground2" != bodies.get(a))
+                            score +=10;
+                        can2.layer().destroy();
+                        canRemove.add(can2);
+
+                    }
+                }
+                for (BottleGlass bottleGlass2: bottleGlass) {
+                    if ((contact.getFixtureA().getBody() == bottleGlass2.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "ground2" == bodies.get(b))) {
+                        if("ground2" != bodies.get(b))
+                          score +=10;
+                        bottleGlass2.layer().destroy();
+                        bottleGlassRemove.add(bottleGlass2);
+
+                    }
+                    if ((contact.getFixtureB().getBody() == bottleGlass2.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "ground2" == bodies.get(a))) {
+                        if("ground2" != bodies.get(a))
+                            score +=10;
+                        bottleGlass2.layer().destroy();
+                        bottleGlassRemove.add(bottleGlass2);
+
+
+                    }
+
+                }
+                for (PlasticBottle plasticBottle2: plasticBottle) {
+                    if ((contact.getFixtureA().getBody() == plasticBottle2.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == plasticBottle2.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == plasticBottle2.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == plasticBottle2.getBody() && "ground2" == bodies.get(b))) {
+                        if("ground2" != bodies.get(b))
+                            score +=10;
+                        plasticBottle2.layer().destroy();
+                        plasticBottleRemove.add(plasticBottle2);
+
+                    }
+                    if ((contact.getFixtureB().getBody() == plasticBottle2.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == plasticBottle2.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == plasticBottle2.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == plasticBottle2.getBody() && "ground2" == bodies.get(a))) {
+                        if("ground2" != bodies.get(a))
+                            score +=10;
+                        plasticBottle2.layer().destroy();
+                        plasticBottleRemove.add(plasticBottle2);
+
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold manifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+
+            }
+        });
+        for(Trash tRemoves: tRemove){
+            world.destroyBody(tRemoves.getBody());
+        }
+        for(Can canRemoves: canRemove){
+            world.destroyBody(canRemoves.getBody());
+        }
+        for(BottleGlass bottleGlass1Removes: bottleGlassRemove){
+            world.destroyBody(bottleGlass1Removes.getBody());
+        }
+        for(PlasticBottle plasticBottleRemoves: plasticBottleRemove){
+            world.destroyBody(plasticBottleRemoves.getBody());
+        }
+
+    }
+
+    @Override
+    public void paint(Clock clock) {
+        super.paint(clock);
+        mike.paint(clock);
+       /* blueBin.paint(clock);
+        yellowBin.paint(clock);
+        greenBin.paint(clock);*/
+
+        for (int k = 0; k <= t1; k++)
+            t.get(k).paint(clock);
+
+        for (int k2 = 0; k2 <= canNum; k2++)
+            can.get(k2).paint(clock);
+
+        for (int k3 = 0; k3 <= bottleGlassNum; k3++)
+            bottleGlass.get(k3).paint(clock);
+
+        for (int k4 = 0; k4 <= plasticBottleNum; k4++)
+            plasticBottle.get(k4).paint(clock);
+
+        if (showDebugDraw) {
+            debugDraw.getCanvas().clear();
+            debugDraw.getCanvas().setFillColor(Color.rgb(200, 15, 15));
+
+            debugDraw.getCanvas().drawText(debugString, 400, 100);
+            debugDraw.getCanvas().drawText(strScore, 400, 80);
+            debugDraw.getCanvas().drawText(strTime, 400, 60);
+            world.drawDebugData();
+        }
+
+    }
+
+    public void move() {
+        PlayN.keyboard().setListener(new Keyboard.Adapter() {
+            @Override
+            public void onKeyDown(Keyboard.Event event) {
+                if (event.key() == Key.RIGHT) {
+                    Mike.action = 1;
+                    switch (Mike.state) {
+                        case IDLE:
+                            if (Mike.action == 1) {
+                                Mike.state = Mike.State.WALK;
+                            }
+                            break;
+                        //case WALK: state = State.THROW; break;
+                        case THROW:
+                            Mike.state = Mike.State.WALK;
+                            break;
+
+                    }
+                    //GameScreen.recivePosition(x_px,y_px);
+
+                } else if (event.key() == Key.LEFT) {
+                    Mike.action = 1;
+                    switch (Mike.state) {
+                        case IDLE:
+                            if (Mike.action == 1) {
+                                Mike.state = Mike.State.BACK;
+                            }
+                            break;
+                        //case WALK: state = State.THROW; break;
+                        case THROW:
+                            Mike.state = Mike.State.WALK;
+                            break;
+                    }
+                    // GameScreen.recivePosition(x_px,y_px);
+                } else if (event.key() == Key.ENTER) {
+                    switch (Mike.state) {
+                        //case IDLE: state = State.WALK; break;
+                        case WALK:
+                            Mike.state = Mike.State.IDLE;
+                            break;
+                        case THROW:
+                            Mike.state = Mike.State.IDLE;
+                            break;
+                        //Gauge g = new Gauge(10f, 10f);
+                    }
+                } else if (event.key() == Key.SPACE) {
+                    switch (Mike.state) {
+                        case IDLE:
+                            Mike.state = Mike.State.THROW;
+                            break;
+                        case WALK:
+                            Mike.state = Mike.State.THROW;
+                            break;
+                        //case THROW: state = State.IDLE; break;
+
+
+                    }
+
+                    Gauge.power(-99);
+                    next = nRand;
+
+                    nRand = rand.nextInt(3) + 1;
+                    if (nRand == 1)
+                        nextString = "Paper";
+                    else if (nRand == 2)
+                        //nextString = "Can";
+                        nextString = "Plastic Bottle";
+                    else if (nRand == 3)
+                        nextString = "Glass Bottle";
+                    debugString = "Next is " + nextString;
+                    //nRand =1;
+                    if (next == 1)
+                        createTrash(t1);
+                    else if (next == 2)
+                        //createTrash(t1);
+                        //createCan(canNum);
+                        createPlasticBottle(plasticBottleNum);
+                    else if (next == 3)
+                        //createTrash(t1);
+                       createBottleGlass(bottleGlassNum);
+
+
+                }
+
+
+            }
+
+
+            public void onKeyUp(Keyboard.Event event) {
+                if (event.key() == Key.RIGHT) {
+                    Mike.action = 0;
+                    if (Mike.action == 0 && Mike.state == Mike.State.WALK) {
+                        Mike.state = Mike.State.IDLE;
+                    }
+
+                }
+                if (event.key() == Key.LEFT) {
+                    Mike.action = 0;
+                    if (Mike.action == 0 && Mike.state == Mike.State.BACK) {
+                        Mike.state = Mike.State.IDLE;
+                    }
+
+                }
+            }
+        });
+    }
+
+    public static void recivePosition(float xMike, float yMike) {
+        xMike2 = xMike;
+        yMike2 = yMike;
+
+    }
+
+    public void createTrash(int t2) {
+        this.t1 = t2;
+        t.add(t1, new Trash(world, xMike2 + 25, yMike2 - 30));
+        bodies.put(t, "Trash" + t1);
+        layer.add(t.get(t1).layer());
+        t.get(t1).hasThrow(1);
+        t1++;
+        /*for (int i =0 ; i <= t1 ; i++){
+
+            graphics().rootLayer().add(t.get(i).layer());
+            bodies.put(t.get(i),"trash"+i);
+            System.out.println(bodies.get(t.get(i)));
+
+        }*/
+         }
+
+    public void createCan(int canNum2) {
+        this.canNum = canNum2;
+        can.add(canNum, new Can(world, xMike2 + 30, yMike2 - 70));
+        bodies.put(can, "Can " + canNum);
+        layer.add(can.get(canNum).layer());
+        can.get(canNum).hasThrow(1);
+        canNum++;
+        /*can.add(canNum, new Can(world, xMike2 + 20, yMike2 - 70));
+        canNum++;
+        for (int i =0 ; i <= canNum ; i++){
+            graphics().rootLayer().add(can.get(i).layer());
+            bodies.put(can.get(i),"can"+i);
+            System.out.println(bodies.get(can.get(i)));
+
+        }*/
+    }
+
+    public void createBottleGlass(int bottleGlassNum2) {
+        this.bottleGlassNum = bottleGlassNum2;
+        bottleGlass.add(bottleGlassNum, new BottleGlass(world, xMike2 + 30, yMike2 - 70));
+        bodies.put(bottleGlass, "BottleGlass " + bottleGlassNum);
+        layer.add(bottleGlass.get(bottleGlassNum).layer());
+        bottleGlass.get(bottleGlassNum).hasThrow(1);
+        bottleGlassNum++;
+    }
+
+    public void createPlasticBottle(int plasticBottleNum2) {
+        this.plasticBottleNum = plasticBottleNum2;
+        plasticBottle.add(plasticBottleNum, new PlasticBottle(world, xMike2 + 30, yMike2 - 70));
+        bodies.put(plasticBottle, "PlasticBottle " + plasticBottleNum);
+        layer.add(plasticBottle.get(plasticBottleNum).layer());
+        plasticBottle.get(plasticBottleNum).hasThrow(1);
+        plasticBottleNum++;
+    }
+
+
+
+    public static void powerMethod(int power2) {
+
+        if (power2 == 0)
+            power = 0;
+        else if (power2 == 1)
+            power = 50f;
+        else if (power2 == 2)
+            power = 100f;
+        else if (power2 == 3)
+            power = 150f;
+        else if (power2 == 4)
+            power = 200f;
+        else if (power2 == 5)
+            power = 250f;
+        else if (power2 == 6)
+            power = 300f;
+        else if (power2 == 7)
+            power = 350f;
+        else if (power2 == 8)
+            power = 400f;
+        else if (power2 == 9)
+            power = 500f;
+        else if (power2 == 10)
+            power = 550;
+
+        //System.out.println("p" +power );
+    }
+
+    public void setOrderOfLayer(Layer layer, int order) {
+        /*for (int h = 0; h <= t1; h++) {
                     if ((contact.getFixtureA().getBody() == t.get(h).getBody() && "blueBin" == bodies.get(b)) ||
                             (contact.getFixtureA().getBody() == t.get(h).getBody() && "yellowBin" == bodies.get(b)) ||
                             (contact.getFixtureA().getBody() == t.get(h).getBody() && "greenBin" == bodies.get(b)) ||
@@ -576,318 +958,6 @@ public class GameScreen extends Screen {
                     }
                     //System.out.println("bottle = " + h3);
                 }*/
-               for (Trash trash: t) {
-                    if ((contact.getFixtureA().getBody() == trash.getBody() && "blueBin" == bodies.get(b)) ||
-                            (contact.getFixtureA().getBody() == trash.getBody() && "yellowBin" == bodies.get(b)) ||
-                            (contact.getFixtureA().getBody() == trash.getBody() && "greenBin" == bodies.get(b))||
-                            (contact.getFixtureA().getBody() == trash.getBody() && "ground2" == bodies.get(b))) {
-
-                      // a.setActive(false);
-                        //trash.layer().setVisible(false);
-                        trash.layer().destroy();
-                        tRemove.add(trash);
-
-                    }
-                    if ((contact.getFixtureB().getBody() == trash.getBody() && "blueBin" == bodies.get(a)) ||
-                            (contact.getFixtureB().getBody() == trash.getBody() && "yellowBin" == bodies.get(a)) ||
-                            (contact.getFixtureB().getBody() == trash.getBody() && "greenBin" == bodies.get(a))||
-                            (contact.getFixtureB().getBody() == trash.getBody() && "ground2" == bodies.get(a))) {
-                        //System.out.println("b");
-                        trash.layer().destroy();
-                        //world.destroyBody(trash.getBody());
-                        tRemove.add(trash);
-                    }
-                   //System.out.println("trash = " + trashNum);
-                   trashNum++;
-                }
-                for (Can can2: can) {
-                    if ((contact.getFixtureA().getBody() == can2.getBody() && "blueBin" == bodies.get(b)) ||
-                            (contact.getFixtureA().getBody() == can2.getBody() && "yellowBin" == bodies.get(b)) ||
-                            (contact.getFixtureA().getBody() == can2.getBody() && "greenBin" == bodies.get(b))||
-                            (contact.getFixtureA().getBody() == can2.getBody() && "ground2" == bodies.get(b))) {
-                       can2.layer().destroy();
-                       canRemove.add(can2);
-
-                    }
-                    if ((contact.getFixtureB().getBody() == can2.getBody() && "blueBin" == bodies.get(a)) ||
-                            (contact.getFixtureB().getBody() == can2.getBody() && "yellowBin" == bodies.get(a)) ||
-                            (contact.getFixtureB().getBody() == can2.getBody() && "greenBin" == bodies.get(a))||
-                            (contact.getFixtureB().getBody() == can2.getBody() && "ground2" == bodies.get(a))) {
-                        can2.layer().destroy();
-                        canRemove.add(can2);
-
-                    }
-                }
-                for (BottleGlass bottleGlass2: bottleGlass) {
-                    if ((contact.getFixtureA().getBody() == bottleGlass2.getBody() && "blueBin" == bodies.get(b)) ||
-                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "yellowBin" == bodies.get(b)) ||
-                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "greenBin" == bodies.get(b))||
-                            (contact.getFixtureA().getBody() == bottleGlass2.getBody() && "ground2" == bodies.get(b))) {
-                        bottleGlass2.layer().destroy();
-                        bottleGlassRemove.add(bottleGlass2);
-
-                    }
-                    if ((contact.getFixtureB().getBody() == bottleGlass2.getBody() && "blueBin" == bodies.get(a)) ||
-                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "yellowBin" == bodies.get(a)) ||
-                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "greenBin" == bodies.get(a))||
-                            (contact.getFixtureB().getBody() == bottleGlass2.getBody() && "ground2" == bodies.get(a))) {
-                        bottleGlass2.layer().destroy();
-                        bottleGlassRemove.add(bottleGlass2);
-
-
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold manifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse contactImpulse) {
-
-            }
-        });
-        for(Trash tRemoves: tRemove){
-            world.destroyBody(tRemoves.getBody());
-        }
-        for(Can canRemoves: canRemove){
-            world.destroyBody(canRemoves.getBody());
-        }
-        for(BottleGlass bottleGlass1Removes: bottleGlassRemove){
-            world.destroyBody(bottleGlass1Removes.getBody());
-        }
-
-    }
-
-    @Override
-    public void paint(Clock clock) {
-        super.paint(clock);
-        mike.paint(clock);
-       /* blueBin.paint(clock);
-        yellowBin.paint(clock);
-        greenBin.paint(clock);*/
-
-        for (int k = 0; k <= t1; k++)
-            t.get(k).paint(clock);
-
-        for (int k2 = 0; k2 <= canNum; k2++)
-            can.get(k2).paint(clock);
-
-        for (int k3 = 0; k3 <= bottleGlassNum; k3++)
-            bottleGlass.get(k3).paint(clock);
-
-        if (showDebugDraw) {
-            debugDraw.getCanvas().clear();
-            debugDraw.getCanvas().setFillColor(Color.rgb(200, 15, 15));
-
-            debugDraw.getCanvas().drawText(debugString, 400, 100);
-            world.drawDebugData();
-        }
-
-    }
-
-    public void move() {
-        PlayN.keyboard().setListener(new Keyboard.Adapter() {
-            @Override
-            public void onKeyDown(Keyboard.Event event) {
-                if (event.key() == Key.RIGHT) {
-                    Mike.action = 1;
-                    switch (Mike.state) {
-                        case IDLE:
-                            if (Mike.action == 1) {
-                                Mike.state = Mike.State.WALK;
-                            }
-                            break;
-                        //case WALK: state = State.THROW; break;
-                        case THROW:
-                            Mike.state = Mike.State.WALK;
-                            break;
-
-                    }
-                    //GameScreen.recivePosition(x_px,y_px);
-
-                } else if (event.key() == Key.LEFT) {
-                    Mike.action = 1;
-                    switch (Mike.state) {
-                        case IDLE:
-                            if (Mike.action == 1) {
-                                Mike.state = Mike.State.BACK;
-                            }
-                            break;
-                        //case WALK: state = State.THROW; break;
-                        case THROW:
-                            Mike.state = Mike.State.WALK;
-                            break;
-                    }
-                    // GameScreen.recivePosition(x_px,y_px);
-                } else if (event.key() == Key.ENTER) {
-                    switch (Mike.state) {
-                        //case IDLE: state = State.WALK; break;
-                        case WALK:
-                            Mike.state = Mike.State.IDLE;
-                            break;
-                        case THROW:
-                            Mike.state = Mike.State.IDLE;
-                            break;
-                        //Gauge g = new Gauge(10f, 10f);
-                    }
-                } else if (event.key() == Key.SPACE) {
-                    switch (Mike.state) {
-                        case IDLE:
-                            Mike.state = Mike.State.THROW;
-                            break;
-                        case WALK:
-                            Mike.state = Mike.State.THROW;
-                            break;
-                        //case THROW: state = State.IDLE; break;
-
-
-                    }
-
-                    Gauge.power(-99);
-                    next = nRand;
-
-                    nRand = rand.nextInt(3) + 1;
-                    if (nRand == 1)
-                        nextString = "Paper";
-                    else if (nRand == 2)
-                        nextString = "Can";
-                    else if (nRand == 3)
-                        nextString = "Glass Bottle";
-                    debugString = "Next is " + nextString;
-                    //nRand =1;
-                    if (next == 1)
-                        createTrash(t1);
-                    else if (next == 2)
-                        //createTrash(t1);
-                        createCan(canNum);
-                    else if (next == 3)
-                        //createTrash(t1);
-                       createBottleGlass(bottleGlassNum);
-
-
-                }
-
-
-            }
-
-
-            public void onKeyUp(Keyboard.Event event) {
-                if (event.key() == Key.RIGHT) {
-                    Mike.action = 0;
-                    if (Mike.action == 0 && Mike.state == Mike.State.WALK) {
-                        Mike.state = Mike.State.IDLE;
-                    }
-
-                }
-                if (event.key() == Key.LEFT) {
-                    Mike.action = 0;
-                    if (Mike.action == 0 && Mike.state == Mike.State.BACK) {
-                        Mike.state = Mike.State.IDLE;
-                    }
-
-                }
-            }
-        });
-    }
-
-    public static void recivePosition(float xMike, float yMike) {
-        xMike2 = xMike;
-        yMike2 = yMike;
-
-    }
-
-    public void createTrash(int t2) {
-        this.t1 = t2;
-        t.add(t1, new Trash(world, xMike2 + 25, yMike2 - 30));
-        bodies.put(t, "Trash" + t1);
-        layer.add(t.get(t1).layer());
-        t.get(t1).hasThrow(1);
-        t1++;
-        /*for (int i =0 ; i <= t1 ; i++){
-
-            graphics().rootLayer().add(t.get(i).layer());
-            bodies.put(t.get(i),"trash"+i);
-            System.out.println(bodies.get(t.get(i)));
-
-        }*/
-         }
-
-    public void createCan(int canNum2) {
-        this.canNum = canNum2;
-        can.add(canNum, new Can(world, xMike2 + 30, yMike2 - 70));
-        bodies.put(can, "Can " + canNum);
-        layer.add(can.get(canNum).layer());
-        can.get(canNum).hasThrow(1);
-        canNum++;
-        /*can.add(canNum, new Can(world, xMike2 + 20, yMike2 - 70));
-        canNum++;
-        for (int i =0 ; i <= canNum ; i++){
-            graphics().rootLayer().add(can.get(i).layer());
-            bodies.put(can.get(i),"can"+i);
-            System.out.println(bodies.get(can.get(i)));
-
-        }*/
-    }
-
-    public void createBottleGlass(int bottleGlassNum2) {
-        this.bottleGlassNum = bottleGlassNum2;
-        bottleGlass.add(bottleGlassNum, new BottleGlass(world, xMike2 + 30, yMike2 - 70));
-        bodies.put(bottleGlass, "BottleGlass " + bottleGlassNum);
-        layer.add(bottleGlass.get(bottleGlassNum).layer());
-        bottleGlass.get(bottleGlassNum).hasThrow(1);
-        bottleGlassNum++;
-
-        /*bottleGlass.add(bottleGlassNum, new BottleGlass(world, xMike2 + 20, yMike2 - 70));
-        bottleGlassNum++;
-        for (int i =0 ; i <= bottleGlassNum ; i++){
-            graphics().rootLayer().add(bottleGlass.get(i).layer());
-            bodies.put(bottleGlass.get(i),"bottleGlass"+i);
-            System.out.println(bodies.get(bottleGlass.get(i)));
-
-        }*/
-    }
-
-
-
-    public static void powerMethod(int power2) {
-
-        if (power2 == 0)
-            power = 0;
-        else if (power2 == 1)
-            power = 50f;
-        else if (power2 == 2)
-            power = 100f;
-        else if (power2 == 3)
-            power = 150f;
-        else if (power2 == 4)
-            power = 200f;
-        else if (power2 == 5)
-            power = 250f;
-        else if (power2 == 6)
-            power = 300f;
-        else if (power2 == 7)
-            power = 350f;
-        else if (power2 == 8)
-            power = 400f;
-        else if (power2 == 9)
-            power = 500f;
-        else if (power2 == 10)
-            power = 550;
-
-        //System.out.println("p" +power );
-    }
-
-    public void setOrderOfLayer(Layer layer, int order) {
         // Process the reordering of layer by removing it, then adding it at the expecting order index
         //jMap.getLayers().remove(layer);
         //jMap.getLayers().add(order,  layer);
