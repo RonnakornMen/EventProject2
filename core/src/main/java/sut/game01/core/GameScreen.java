@@ -113,7 +113,8 @@ public class GameScreen extends Screen {
     private String strScore;
     private String strTime;
     int score =0;
-    int time =0;
+    int time =60;
+    int time2;
     int targetScore =100;
 
     public static float M_PER_PIXEL = 1 / 26.666667f;
@@ -247,6 +248,8 @@ public class GameScreen extends Screen {
         world.setAutoClearForces(true);
         mike = new Mike(world, 100f, 480f);
         gauge = new Gauge(10f, 10f);
+
+
     }
 
 
@@ -259,8 +262,8 @@ public class GameScreen extends Screen {
         //this.layer.add(settingButton);
         //this.layer.add(mario);
         this.layer.add(pauseButton);
-        this.layer.add(overButton);
-        this.layer.add(endButton);
+        //this.layer.add(overButton);
+       // this.layer.add(endButton);
 
 
         this.layer.add(blueBin);
@@ -428,7 +431,6 @@ public class GameScreen extends Screen {
         //throwTrash();
 
 
-
     }
 
 
@@ -441,11 +443,14 @@ public class GameScreen extends Screen {
         yellowBin.update(delta);
         greenBin.update(delta);*/
         move();
-
-        strScore = "Score = "+score+"/"+targetScore;
-        time = 60;
-        strTime = "Time =" + (time - (timeI/40));
+        time = 60-(timeI/40);
         timeI++;
+        if(time ==0) {
+            checkScore();
+        }
+        strTime = "Time = "+ time;
+        strScore = "Score = "+score+"/"+targetScore;
+
 
 
         world.step(0.033f, 10, 10);
@@ -650,6 +655,8 @@ public class GameScreen extends Screen {
         for(PlasticBottle plasticBottleRemoves: plasticBottleRemove){
             world.destroyBody(plasticBottleRemoves.getBody());
         }
+
+
 
     }
 
@@ -877,6 +884,22 @@ public class GameScreen extends Screen {
             power = 550;
 
         //System.out.println("p" +power );
+    }
+    public void checkScore(){
+        if(score <=targetScore) {
+            timeI = 0;
+            time = 60;
+            score =0;
+            debugDraw.getCanvas().clear();
+            ss.push(overScreen);
+        }
+        else if(score >=targetScore){
+            timeI = 0;
+            time = 60;
+            score =0;
+            debugDraw.getCanvas().clear();
+            ss.push(endScreen);
+        }
     }
 
     public void setOrderOfLayer(Layer layer, int order) {
