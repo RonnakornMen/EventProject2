@@ -63,6 +63,9 @@ public class GameScreen extends Screen {
     private final ImageLayer blueBin;
     private final ImageLayer yellowBin;
     private final ImageLayer greenBin;
+    private final  ImageLayer scoreWindows;
+    private final ImageLayer nextWindows;
+    private final ImageLayer clock;
     private Image bgImage;
     private Image cloudImage;
     private float xC = 24.0f;
@@ -87,6 +90,8 @@ public class GameScreen extends Screen {
     ArrayList<Can> canRemove =new ArrayList<Can>();
     ArrayList<BottleGlass> bottleGlassRemove =new ArrayList<BottleGlass>();
     ArrayList<PlasticBottle> plasticBottleRemove =new ArrayList<PlasticBottle>();
+    ArrayList<Book> bookRemove =new ArrayList<Book>();
+    ArrayList<PlasticGlass> plasticGlassRemove =new ArrayList<PlasticGlass>();
     ArrayList<Trash> t = new ArrayList<Trash>();
     int t1 = 0;
     ArrayList<Can> can = new ArrayList<Can>();
@@ -95,6 +100,10 @@ public class GameScreen extends Screen {
     int bottleGlassNum = 0;
     ArrayList<PlasticBottle> plasticBottle = new ArrayList<PlasticBottle>();
     int plasticBottleNum =0;
+    ArrayList<Book> book = new ArrayList<Book>();
+    int bookNum =0;
+    ArrayList<PlasticGlass> plasticGlass = new ArrayList<PlasticGlass>();
+    int plasticGlassNum =0;
     int trashNum = 0;
     int timeI = 0;
     int bottleGlass3 = 0;
@@ -131,7 +140,7 @@ public class GameScreen extends Screen {
     private DebugDrawBox2D debugDraw;
 
     Random rand = new Random();
-    int nRand = rand.nextInt(3) + 1;
+    int nRand = rand.nextInt(6) + 1;
 
 
 
@@ -151,8 +160,14 @@ public class GameScreen extends Screen {
              nextString = "Plastic Bottle";
         else if (nRand == 3)
             nextString = "Glass Bottle";
-        debugString = "Next is " + nextString;
+        else if (nRand == 4)
+            nextString = "Can";
+        else if (nRand == 5)
+            nextString = "Book";
+        else if (nRand == 6)
+            nextString = "Plastic Glass";
 
+        debugString = "Next is " + nextString;
 
         bgImage = assets().getImage("images/bg.png");
         this.bg = graphics().createImageLayer(bgImage);
@@ -286,7 +301,9 @@ public class GameScreen extends Screen {
         this.layer.add(blueBin);
         this.layer.add(yellowBin);
         this.layer.add(greenBin);
-
+        this.layer.add(scoreWindows);
+        this.layer.add(clock);
+        this.layer.add(nextWindows);
 
         mike.getBody().setTransform(new Vec2(100f * M_PER_PIXEL, 480f * M_PER_PIXEL), 0);
         //mike = new Mike(world, 100f, 480f);
@@ -311,6 +328,10 @@ public class GameScreen extends Screen {
         layer.add(bottleGlass.get(bottleGlassNum).layer());
         plasticBottle.add(plasticBottleNum, new PlasticBottle(world, -100f, 480f));
         layer.add(plasticBottle.get(plasticBottleNum).layer());
+        book.add(bookNum, new Book(world, -100f, 480f));
+        layer.add(book.get(bookNum).layer());
+        plasticGlass.add(plasticGlassNum, new PlasticGlass(world, -100f, 480f));
+        layer.add(plasticGlass.get(plasticGlassNum).layer());
 
 
         this.layer.add(wall);
@@ -465,7 +486,11 @@ public class GameScreen extends Screen {
         if(time ==0) {
             checkScore();
         }
+<<<<<<< HEAD
         strTime = ""+time;
+=======
+        strTime = ""+ time;
+>>>>>>> test
         strScore = "Score = "+score+"/"+targetScore;
 
 
@@ -503,6 +528,12 @@ public class GameScreen extends Screen {
         }
         for (int k4 = 0; k4 <= plasticBottleNum; k4++) {
             plasticBottle.get(k4).update(delta);
+        }
+        for (int k5 = 0; k5 <= plasticGlassNum; k5++) {
+            plasticGlass.get(k5).update(delta);
+        }
+        for (int k6 = 0; k6 <= bookNum; k6++) {
+            book.get(k6).update(delta);
         }
        /* if(destroy == true){
             // t.get(t1).layer().destroy();
@@ -547,12 +578,18 @@ public class GameScreen extends Screen {
                             (contact.getFixtureA().getBody() == trash.getBody() && "yellowBin" == bodies.get(b)) ||
                             (contact.getFixtureA().getBody() == trash.getBody() && "greenBin" == bodies.get(b))||
                             (contact.getFixtureA().getBody() == trash.getBody() && "ground2" == bodies.get(b))) {
+<<<<<<< HEAD
 
                         // a.setActive(false);
                         //trash.layer().setVisible(false);
                         if ("ground2" != bodies.get(b)&&"blueBin" == bodies.get(b)){
                             score += 10;
                       }
+=======
+                        if ("ground2" != bodies.get(b)&&"blueBin" == bodies.get(b)){
+                            score += 10;
+                        }
+>>>>>>> test
                         else if("yellowBin" == bodies.get(b) || "greenBin" == bodies.get(b)) {
                             if (score > 0)
                                 score -= 5;
@@ -566,6 +603,7 @@ public class GameScreen extends Screen {
                             (contact.getFixtureB().getBody() == trash.getBody() && "yellowBin" == bodies.get(a)) ||
                             (contact.getFixtureB().getBody() == trash.getBody() && "greenBin" == bodies.get(a))||
                             (contact.getFixtureB().getBody() == trash.getBody() && "ground2" == bodies.get(a))) {
+<<<<<<< HEAD
                         //System.out.println("b");
                         if ("ground2" != bodies.get(b)&&"blueBin" == bodies.get(b)){
                             score += 10;
@@ -574,6 +612,14 @@ public class GameScreen extends Screen {
                         else if("yellowBin" == bodies.get(b) || "greenBin" == bodies.get(b)){
                             if (score > 0)
                             score -=5;
+=======
+                        if ("ground2" != bodies.get(b)&&"blueBin" == bodies.get(b)){
+                            score += 10;
+                        }
+                        else if("yellowBin" == bodies.get(b) || "greenBin" == bodies.get(b)) {
+                            if (score > 0)
+                                score -= 5;
+>>>>>>> test
                         }
                         trash.layer().destroy();
                         //world.destroyBody(trash.getBody());
@@ -605,7 +651,10 @@ public class GameScreen extends Screen {
                             (contact.getFixtureB().getBody() == can2.getBody() && "ground2" == bodies.get(a))) {
                         if ("ground2" != bodies.get(b)&&"yellowBin" == bodies.get(b)){
                             score += 10;
+<<<<<<< HEAD
 
+=======
+>>>>>>> test
                         }
                         else if("blueBin" == bodies.get(b) || "greenBin" == bodies.get(b)){
                             if (score > 0)
@@ -642,7 +691,11 @@ public class GameScreen extends Screen {
                         else if("blueBin" == bodies.get(b) || "yellowBin" == bodies.get(b)){
                             if (score > 0)
                                 score -=5;
+<<<<<<< HEAD
                         };
+=======
+                        }
+>>>>>>> test
                         bottleGlass2.layer().destroy();
                         bottleGlassRemove.add(bottleGlass2);
 
@@ -684,6 +737,74 @@ public class GameScreen extends Screen {
                     }
 
                 }
+                for (Book book2: book) {
+                    if ((contact.getFixtureA().getBody() == book2.getBody() && "blueBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == book2.getBody() && "yellowBin" == bodies.get(b)) ||
+                            (contact.getFixtureA().getBody() == book2.getBody() && "greenBin" == bodies.get(b))||
+                            (contact.getFixtureA().getBody() == book2.getBody() && "ground2" == bodies.get(b))) {
+                        if ("ground2" != bodies.get(b)&&"blueBin" == bodies.get(b)){
+                            score += 10;
+                        }
+                        else if("yellowBin" == bodies.get(b) || "greenBin" == bodies.get(b)) {
+                            if (score > 0)
+                                score -= 5;
+                        }
+                        book2.layer().destroy();
+                        bookRemove.add(book2);
+
+                    }
+                    if ((contact.getFixtureB().getBody() == book2.getBody() && "blueBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == book2.getBody() && "yellowBin" == bodies.get(a)) ||
+                            (contact.getFixtureB().getBody() == book2.getBody() && "greenBin" == bodies.get(a))||
+                            (contact.getFixtureB().getBody() == book2.getBody() && "ground2" == bodies.get(a))) {
+                        if ("ground2" != bodies.get(b)&&"blueBin" == bodies.get(b)){
+                            score += 10;
+                        }
+                        else if("yellowBin" == bodies.get(b) || "greenBin" == bodies.get(b)) {
+                            if (score > 0)
+                                score -= 5;
+                        }
+                        book2.layer().destroy();
+                        bookRemove.add(book2);
+
+
+                    }
+
+                    for (PlasticGlass plasticGlass2: plasticGlass) {
+                        if ((contact.getFixtureA().getBody() == plasticGlass2.getBody() && "blueBin" == bodies.get(b)) ||
+                                (contact.getFixtureA().getBody() == plasticGlass2.getBody() && "yellowBin" == bodies.get(b)) ||
+                                (contact.getFixtureA().getBody() == plasticGlass2.getBody() && "greenBin" == bodies.get(b))||
+                                (contact.getFixtureA().getBody() == plasticGlass2.getBody() && "ground2" == bodies.get(b))) {
+                            if ("ground2" != bodies.get(b)&&"yellowBin" == bodies.get(b)){
+                                score += 10;
+                            }
+                            else if("blueBin" == bodies.get(b) || "greenBin" == bodies.get(b)){
+                                if (score > 0)
+                                    score -=5;
+                            }
+                            plasticGlass2.layer().destroy();
+                            plasticGlassRemove.add(plasticGlass2);
+
+                        }
+                        if ((contact.getFixtureB().getBody() == plasticGlass2.getBody() && "blueBin" == bodies.get(a)) ||
+                                (contact.getFixtureB().getBody() == plasticGlass2.getBody() && "yellowBin" == bodies.get(a)) ||
+                                (contact.getFixtureB().getBody() == plasticGlass2.getBody() && "greenBin" == bodies.get(a))||
+                                (contact.getFixtureB().getBody() == plasticGlass2.getBody() && "ground2" == bodies.get(a))) {
+                            if ("ground2" != bodies.get(b)&&"yellowBin" == bodies.get(b)){
+                                score += 10;
+                            }
+                            else if("blueBin" == bodies.get(b) || "greenBin" == bodies.get(b)){
+                                if (score > 0)
+                                    score -=5;
+                            }
+                            plasticGlass2.layer().destroy();
+                            plasticGlassRemove.add(plasticGlass2);
+
+
+                        }
+                    }
+
+                }
 
             }
 
@@ -714,6 +835,12 @@ public class GameScreen extends Screen {
         for(PlasticBottle plasticBottleRemoves: plasticBottleRemove){
             world.destroyBody(plasticBottleRemoves.getBody());
         }
+        for(Book bookRemoves: bookRemove){
+            world.destroyBody(bookRemoves.getBody());
+        }
+        for(PlasticGlass plasticGlass1Removes: plasticGlassRemove){
+            world.destroyBody(plasticGlass1Removes.getBody());
+        }
 
 
 
@@ -738,6 +865,12 @@ public class GameScreen extends Screen {
 
         for (int k4 = 0; k4 <= plasticBottleNum; k4++)
             plasticBottle.get(k4).paint(clock);
+
+        for (int k5 = 0; k5 <= plasticGlassNum; k5++)
+            plasticGlass.get(k5).paint(clock);
+
+        for (int k6 = 0; k6 <= bookNum; k6++)
+            book.get(k6).paint(clock);
 
         if (showDebugDraw) {
             debugDraw.getCanvas().clear();
@@ -812,7 +945,7 @@ public class GameScreen extends Screen {
                     Gauge.power(-99);
                     next = nRand;
 
-                    nRand = rand.nextInt(3) + 1;
+                    nRand = rand.nextInt(6) + 1;
                     if (nRand == 1)
                         nextString = "Paper";
                     else if (nRand == 2)
@@ -820,6 +953,12 @@ public class GameScreen extends Screen {
                         nextString = "Plastic Bottle";
                     else if (nRand == 3)
                         nextString = "Glass Bottle";
+                    else if (nRand == 4)
+                        nextString = "Can";
+                    else if (nRand == 5)
+                        nextString = "Book";
+                    else if (nRand == 6)
+                        nextString = "Plastic Glass";
                     debugString = "Next is " + nextString;
                     //nRand =1;
                     if (next == 1)
@@ -830,7 +969,17 @@ public class GameScreen extends Screen {
                         createPlasticBottle(plasticBottleNum);
                     else if (next == 3)
                         //createTrash(t1);
-                       createBottleGlass(bottleGlassNum);
+                        createBottleGlass(bottleGlassNum);
+                    else if (next == 4)
+                        //createTrash(t1);
+                        //createCan(canNum);
+                        createCan(canNum);
+                    else if (next == 5)
+                        //createTrash(t1);
+                        createBook(bookNum);
+                    else if (next == 6)
+                        //createTrash(t1);
+                        createPlasticGlass(plasticGlassNum);
 
 
                 }
@@ -913,6 +1062,25 @@ public class GameScreen extends Screen {
         layer.add(plasticBottle.get(plasticBottleNum).layer());
         plasticBottle.get(plasticBottleNum).hasThrow(1);
         plasticBottleNum++;
+    }
+
+
+    public void createBook(int bookNum2) {
+        this.bookNum = bookNum2;
+        book.add(bookNum, new Book(world, xMike2 + 30, yMike2 - 70));
+        bodies.put(book, "Book " + bookNum);
+        layer.add(book.get(bookNum).layer());
+        book.get(bookNum).hasThrow(1);
+        bookNum++;
+    }
+
+    public void createPlasticGlass(int plasticGlassNum2) {
+        this.plasticGlassNum = plasticGlassNum2;
+        plasticGlass.add(plasticGlassNum, new PlasticGlass(world, xMike2 + 30, yMike2 - 70));
+        bodies.put(plasticGlass, "PlasticGlass " + plasticGlassNum);
+        layer.add(plasticGlass.get(plasticGlassNum).layer());
+        plasticGlass.get(plasticGlassNum).hasThrow(1);
+        plasticGlassNum++;
     }
 
 
