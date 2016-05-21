@@ -60,7 +60,7 @@ public class Gauge   {
                 sprite.setSprite(spriteIndex);
                 sprite.layer().setOrigin(sprite.width() / 2f,
                         sprite.height() / 2f);
-                sprite.layer().setTranslation(200, 200);
+                sprite.layer().setTranslation(x, y);
                 hasLoaded = true;
             }
 
